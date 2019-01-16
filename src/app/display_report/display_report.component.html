@@ -1,0 +1,84 @@
+<ScrollView>
+	<StackLayout class="main">
+		<Image [src]="icon" class="icon" class="photo"></Image>
+		<FlexboxLayout>
+			<label class="general" text="General"></label>
+		</FlexboxLayout>
+		<FlexboxLayout class="box">
+			<Label class="label_left" text="Date"></Label>
+			<Label class="label" [text]="date"></Label>
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="!isInsurance">
+			<Label class="label_left" text="Time"></Label>
+			<Label class="label" [text]="time"></Label>
+		</FlexboxLayout>
+		<FlexboxLayout>
+			<label class="general" text="Detail"></label>
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="isRefuel">
+			<Label class="label_left" text="Fuel Type"></Label>
+			<Label class="label" [text]="fuel_type"></Label>
+
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="!isReminder">
+			<Label class="label_left" text="Amount Paid"></Label>
+			<StackLayout class="container" flexDirection="row">
+				<Label class="label_main" [text]="amount_paid"></Label>
+				<label class="label_detail" text="Ringgit Malaysia"></label>
+			</StackLayout>
+
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="isRefuel">
+			<Label class="label_left" text="Fuel Price"></Label>
+			<StackLayout class="container" flexDirection="row">
+				<Label class="label_main" [text]="fuel_price"></Label>
+				<label class="label_detail" text="RM/ Litre"></label>
+			</StackLayout>
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="isRefuel">
+			<Label class="label_left" text="Total Volume"></Label>
+			<StackLayout flexDirection="row" class="container">
+				<Label class="label_main" [text]="total_volume"></Label>
+				<label class="label_detail" text="Litre"></label>
+			</StackLayout>
+
+		</FlexboxLayout>
+		<!--
+		<FlexboxLayout class="box" *ngIf="!isInsurance && !isReminder">
+			<Label class="label_left" text="Location"></Label>
+			<Label class="label" [text]="location"></Label>
+		</FlexboxLayout>-->
+		<FlexboxLayout class="box" *ngIf="!isInsurance && !isReminder">
+			<Label class="label_left" text="Odometer"></Label>
+			<Label class="label" [text]="odometer"></Label>
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="isService">
+			<Label class="label_left" text="Parts"></Label>
+			<Label class="label" [text]="parts"></Label>
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="isExpenses">
+			<Label class="label_left" text="Expenses Type"></Label>
+			<Label class="label" [text]="expenses_type"></Label>
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="isInsurance">
+			<Label class="label_left" text="Insurance Type"></Label>
+			<Label class="label" [text]="insurance_type"></Label>
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="isInsurance">
+			<Label class="label_left" text="Insurance Company"></Label>
+			<Label class="label" [text]="insurance_company"></Label>
+		</FlexboxLayout>
+		<FlexboxLayout class="box" *ngIf="isReminder">
+			<Label class="label_left" text="Reminder"></Label>
+			<Label class="label" [text]="remind_before"></Label>
+		</FlexboxLayout>
+		<FlexboxLayout>
+			<label class="general" text="Note"></label>
+		</FlexboxLayout>
+		<FlexboxLayout class="note_box">
+			<WebImage class="photo" [src]="photo" (tap)="change_size($event)"></WebImage>
+			<TextView *ngIf="!image_enlarge" class="note" editable="false" [text]="note"></TextView>
+		</FlexboxLayout>
+		<Button (tap)="close()" text="CLOSE" class="close"></Button>
+	</StackLayout>
+</ScrollView>

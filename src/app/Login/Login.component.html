@@ -1,0 +1,23 @@
+<ActionBar class="action-bar" height="0" hidden="true">
+</ActionBar>
+<TabView tabBackgroundColor="#2671f0" id="tabViewContainer" androidTabsPosition="bottom" (selectedIndexChanged)="IndexChanged($event)">
+    <StackLayout *tabItem="{title: 'Login'}" class="login_background">
+        <StackLayout class="Logincontainer">
+            <TextField class="email" hint="Email Address" keyboardType="email" autocorrect="false"
+                autocapitalization="none" [(ngModel)]="email"></TextField>
+            <TextField class="password" hint="Password" secure="true" autocorrect="false"
+                autocapitalization="none" [(ngModel)]="password"></TextField>
+            <Button class="btn btn-primary" text="SIGN IN" (tap)="onSigninButtonTap()"></Button>
+            <Label class="m-t-10 m-b-10 m-l-15 m-r-15" text="Forgot password?" (tap)="onForgotPasswordTap()"></Label>
+        </StackLayout>
+    </StackLayout>
+    <StackLayout *tabItem="{title: 'Register'}" class="register_background">
+        <StackLayout class="Logincontainer">
+            <TextField class="email" hint="Email Address" keyboardType="email" autocorrect="false"
+                autocapitalization="none" [(ngModel)]="email"></TextField>
+            <TextField class="password" hint="Password" secure="true" autocorrect="false"
+                autocapitalization="none" [(ngModel)]="password"></TextField>
+            <Button class="btn btn-primary" text="SIGN UP" (tap)="onSignupButtonTap()"></Button>
+        </StackLayout>
+    </StackLayout>
+</TabView>

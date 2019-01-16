@@ -1,0 +1,42 @@
+<ActionBar title="Insurance" class="action-bar">
+	<NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBack()"></NavigationButton>
+</ActionBar>
+<GridLayout class="Form">
+	<ScrollView>
+		<StackLayout>
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label text="Date" class="Main_Label"></Label>
+				<Button text="Date" (tap)="showDate()"></Button>
+			</FlexboxLayout>
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label class="Main_Label" text="Insurance Type"></Label>
+				<ListPicker class="picker" [items]="insurancetype" (selectedIndexChange)="selectedtype($event)"></ListPicker>
+			</FlexboxLayout>
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label text="Amount Paid" class="Main_Label"></Label>
+				<FlexboxLayout class="detail-container-box">
+					<Label text="RM" class="sub-label"></Label>
+					<TextField returnKeyType="done" hint="0.00" keyboardType="number" [(ngModel)]="insuranceAmount" class="textfield"></TextField>
+				</FlexboxLayout>
+			</FlexboxLayout>
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label class="Main_Label" text="Company"></Label>
+				<ListPicker class="picker" [items]="insuranceCompany" (selectedIndexChange)="selectedcompany($event)"></ListPicker>
+			</FlexboxLayout>
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label class="Main_Label" text="Note"></Label>
+				<TextView [(ngModel)]="note" editable="true" class="textview"></TextView>
+			</FlexboxLayout>
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label class="Main_Label" text="Image"></Label>
+				<Image *ngIf="image" [src]="image" class="image"></Image>
+				<Button *ngIf="!image" text="Take Photo" (tap)="onTakePicture()" class="photo_button"></Button>
+				<Button *ngIf="!image" text="Library" (tap)="onPick()" class="photo_button"></Button>
+			</FlexboxLayout>
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Button class="submit_button" (tap)="validation()" text="SAVE"></Button>
+			</FlexboxLayout>
+		</StackLayout>
+	</ScrollView>
+	<ActivityIndicator row="1" #activityIndicator [busy]="onbusy" width="100" height="100" class="activity-indicator"></ActivityIndicator>
+</GridLayout>

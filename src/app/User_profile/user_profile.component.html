@@ -1,0 +1,55 @@
+<ActionBar class="action-bar">
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+    <ActionItem *ngIf="!edit" (tap)="onEdit()" ios.systemIcon="2" ios.position="right" android.systemIcon="ic_menu_edit"
+        android.position="right"></ActionItem>
+    <ActionItem *ngIf="edit" (tap)="onDone()" ios.systemIcon="0" ios.position="right" android.position="right"
+        android.systemIcon="ic_menu_save"></ActionItem>
+    <ActionItem *ngIf="edit" (tap)="onCancel()" ios.systemIcon="1" ios.position="right" android.position="right"
+        android.systemIcon="ic_notification_clear_all"></ActionItem>
+    <Label class="action-bar-title" text="User Profile"></Label>
+</ActionBar>
+<GridLayout class="User_profile">
+<ScrollView #scrollView (scroll)="onScroll($event, scrollView, topView)">
+    <StackLayout>
+        <StackLayout #topView height="250" class="top-background">
+            <FlexBoxLayout class="profile_pic">
+                <WebImage (tap)="uploadImage()" rounded="true" class="profile_pic_1" [src]="Profile_image_url" stretch="aspectFill"></WebImage>
+            </FlexBoxLayout>
+
+            
+            <TextView #username class="main_username" [(ngModel)]="User_Name" [editable]="edit"></TextView>
+            <label class="sub_main_email" [text]="User_Email"></label>
+        </StackLayout>
+        <StackLayout class="bottom_box">
+           
+            <FlexboxLayout flexDirection="row" class="bottom_layout">
+                <label class="Main_Label" text="Number Of Vehicle " textWrap=true></label>
+                <label class="Sub_Label" [text]="TotalNumberOfVehicleOwned" textWrap=true></label>
+            </FlexboxLayout>
+            <FlexboxLayout flexDirection="row" class="bottom_layout">
+                <label class="Main_Label" text="Total Number Of Reports " textWrap=true></label>
+                <label class="Sub_Label" [text]="TotalNumberOfReports" textWrap=true></label>
+            </FlexboxLayout>
+            <FlexboxLayout flexDirection="row" class="bottom_layout">
+                <label class="Main_Label" text="Total Spending(RM) " textWrap=true></label>
+                <label class="Sub_Label" [text]="TotalCost" textWrap=true></label>
+            </FlexboxLayout>
+            <FlexboxLayout flexDirection="row" class="bottom_layout">
+                <label class="Main_Label" text="Most Frequent Vehicle " textWrap=true></label>
+                <label class="Sub_Label" [text]="Most_frequent_vehicle" textWrap=true></label>
+            </FlexboxLayout>
+            <FlexboxLayout flexDirection="row" class="bottom_layout">
+                <label class="Main_Label" text="Highest Spending(RM) " textWrap=true></label>
+                <label class="Sub_Label" [text]="highet_spending" textWrap=true></label>
+            </FlexboxLayout>
+            <FlexboxLayout flexDirection="row" class="bottom_layout">
+                <label class="Main_Label" text="Number Of Branched Accounts " textWrap=true></label>
+                <label class="Sub_Label" [text]="TotalNumberOfBranch" textWrap=true></label>
+            </FlexboxLayout>
+        </StackLayout>
+     
+    </StackLayout>
+   
+</ScrollView>
+</GridLayout>

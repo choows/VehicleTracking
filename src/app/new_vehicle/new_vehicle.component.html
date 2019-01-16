@@ -1,0 +1,40 @@
+<ActionBar title="New Vehicle" class="action-bar">
+	<NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBack()"></NavigationButton>
+</ActionBar>
+<GridLayout class="Form">
+	<ScrollView>
+    <StackLayout>
+        <FlexboxLayout class="Form_container"flexDirection="row">
+        <Button class="side-button" (tap)="onTakePicture()" text="Photo" [backgroundImage]="image" ></Button>
+        <br>
+		<ListPicker class="side-list-picker" width=50% [items]="vehicle_list" marginRight="5" (selectedIndexChange)="selectedVehicle($event)"></ListPicker>
+        </FlexboxLayout>
+    <StackLayout>
+	<FlexboxLayout class="Form_container" flexDirection="column">
+            <Label class="Main_Label" text="Plate Number"></Label>
+		<TextField class="textfield" hint="PDY 2759" [(ngModel)]="plate_number"></TextField>
+	</FlexboxLayout>
+    </StackLayout>
+	<FlexboxLayout class="Form_container" flexDirection="column">
+		<Label class="Main_Label" text="Manufacturer"></Label>
+		<ListPicker class="picker" [items]="manufacturer" (selectedIndexChange)="selectedManu($event)"></ListPicker>
+	</FlexboxLayout>
+    <FlexboxLayout class="Form_container"flexDirection="column">
+            <Label class="Main_Label" text="Tank Capacity"></Label>
+        <TextField keyboardType="Number" hint="50" [(ngModel)]="tank_cap" class="textfield"></TextField>
+    </FlexboxLayout>
+    <FlexboxLayout class="Form_container" flexDirection="column" >
+        <Label  class="Main_Label" text="Fuel Type"></Label>
+        <ListPicker class="picker" [items]="fuel_type" (selectedIndexChange)="selected_fuel_type($event)"></ListPicker>
+    </FlexboxLayout>
+    <FlexboxLayout class="Form_container" flexDirection="column">
+            <Label class="Main_Label" text="Odometer Reading"></Label>
+        <TextField class="textfield" keyboardType="Number" hint="627352" [(ngModel)]="Odometer"></TextField>
+    </FlexboxLayout>
+    <FlexboxLayout class="Form_container">
+        <Button class="submit_button" (tap)="saved()" text="SAVE"></Button>
+    </FlexboxLayout>
+    </StackLayout>
+		</ScrollView>
+<ActivityIndicator row="1" #activityIndicator [busy]="onbusy" width="100" height="100" class="activity-indicator"></ActivityIndicator>
+</GridLayout>

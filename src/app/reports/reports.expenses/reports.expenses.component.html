@@ -1,0 +1,66 @@
+<ActionBar title="Expenses" class="action-bar">
+	<NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBack()"></NavigationButton>
+</ActionBar>
+<GridLayout class="Form">
+	<ScrollView *ngIf="!currentGeoLocation">
+		<StackLayout>
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label text="Date" class="Main_Label"></Label>
+				<Button text="Date" (tap)="showDate()"></Button>
+			</FlexboxLayout>
+
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label text="Time" class="Main_Label"></Label>
+				<button text="Time" (tap)="showTime()"></button>
+			</FlexboxLayout>
+
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label text="Expenses Type" class="Main_Label"></Label>
+				<ListPicker class="picker" [items]="expensestype" (selectedIndexChange)="selectedtype($event)"></ListPicker>
+			</FlexboxLayout>
+
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label text="Amount Paid" class="Main_Label"></Label>
+				<FlexboxLayout class="detail-container-box">
+				<Label text="RM" class="sub-label"></Label>
+				<TextField returnKeyType="done" hint="0.00" keyboardType="number" [(ngModel)]="expensesAmount" class="textfield"></TextField>
+				</FlexboxLayout>
+			</FlexboxLayout>
+
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label text="Location" class="Main_Label"></Label>
+				<Button text="Show location" (tap)="enableLocationServices()" *ngIf="!currentGeoLocation"></Button>
+			</FlexboxLayout>
+
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label class="Main_Label" text="Odometer"></Label>
+				<FlexboxLayout class="detail-container-box">
+				<TextField class="textfield" [(ngModel)]="Odometer" keyboardType="number" [hint]="odo_hint"></TextField>
+				<Label text="KM" class="sub-label"></Label>
+				</FlexboxLayout>
+			</FlexboxLayout>
+
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label class="Main_Label" text="Note"></Label>
+				<TextView [(ngModel)]="note" editable="true" class="textview"></TextView>
+			</FlexboxLayout>
+
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Label class="Main_Label" text="Image"></Label>
+				<Image *ngIf="image" [src]="image" class="image"></Image>
+				<Button *ngIf="!image" text="Take Photo" (tap)="onTakePicture()" class="photo_button"></Button>
+				<Button *ngIf="!image" text="Library" (tap)="onPick()" class="photo_button"></Button>
+			</FlexboxLayout>
+
+			<FlexboxLayout class="Form_container" flexDirection="column">
+				<Button class="submit_button" (tap)="validation()" text="SAVE"></Button>
+			</FlexboxLayout>
+		</StackLayout>
+	</ScrollView>
+	<FlexboxLayout flexDirection="column" *ngIf="currentGeoLocation" class="MapView">
+		<MapView class="Map" (cameraChanged)="onCameraChanged($event)" (coordinateTapped)="onCoordinateTapped($event)"
+		 (mapReady)="onMapReady($event)" [zoom]="zoom" [latitude]="latitude" [longitude]="longitude" mapAnimationsEnabled="true"></MapView>
+		<Button class="coordinate_submit_button" text="Done" (tap)="disableMap()"></Button>
+	</FlexboxLayout>
+	<ActivityIndicator row="1" #activityIndicator [busy]="onbusy" width="100" height="100" class="activity-indicator"></ActivityIndicator>
+</GridLayout>

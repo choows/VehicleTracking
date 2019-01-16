@@ -1,0 +1,18 @@
+<ActionBar class="action-bar">
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
+    <Label class="action-bar-title" [text]="Name"></Label>
+</ActionBar>
+
+<GridLayout rows="auto, *, auto" tkExampleTitle tkToggleNavButton class="BranchView">
+    <RadListView class="list-group" #myListView (itemSelected)="onItemTap($event)" [items]="data" row="1"
+        selectionBehavior="Press" (itemLoading)="onItemLoading($event)" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)">
+        <ListViewLinearLayout tkListViewLayout scrollDirection="Vertical"></ListViewLinearLayout>
+        <ng-template tkTemplateKey="details" kListItemTemplate let-item="item">
+            <GridLayout class="list-group-item" rows="*" columns="auto, *">
+                <WebImage  rounded="true" row="0" col="0" [src]="item.Photo" class="thumb img-circle"></WebImage>
+                <Label row="0" col="1" [text]="item.vehicle_plate_no"></Label>
+            </GridLayout>
+        </ng-template>
+    </RadListView>
+</GridLayout>

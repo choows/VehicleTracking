@@ -1,0 +1,36 @@
+// Import app variables
+@import 'app-variables';
+
+// Import the theme’s main ruleset - both index and platform specific.
+@import '~nativescript-theme-core/scss/index';
+@import '~nativescript-theme-core/scss/platforms/index.ios';
+
+// Import common styles
+@import 'app-common';
+
+// Place any CSS rules you want to apply only on iOS here
+ActionBar .fa {
+    padding: 40px 40px 40px 0;
+}
+.list-group {
+    background-color: transparent;
+    .list-group-item {
+      color: black;
+      font-size: 16;
+      margin: 0;
+      padding: 16;
+      background-color: transparent;
+      Image{
+          background-color: transparent;
+      }
+      Label{
+          background-color: transparent;
+      }
+    }
+    .list-view{
+        background-color: transparent;
+    }
+}
+.profile_pic_1{
+    border-radius: 90%;
+}

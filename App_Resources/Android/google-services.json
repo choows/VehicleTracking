@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "289238315506",
+    "firebase_url": "https://backupfirebaseproject.firebaseio.com",
+    "project_id": "backupfirebaseproject",
+    "storage_bucket": "backupfirebaseproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289238315506:android:062844dcd5881768",
+        "android_client_info": {
+          "package_name": "org.nativescript.Application2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289238315506-nnpbcvih9evedgn7d9tlgqdn5qvtgmkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsay5rbupg_Q1DM7HWOgfSoiLxM_D9QSo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289238315506:android:1b2148a40a89719e",
+        "android_client_info": {
+          "package_name": "org.nativescript.FleetManagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "289238315506-nnpbcvih9evedgn7d9tlgqdn5qvtgmkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsay5rbupg_Q1DM7HWOgfSoiLxM_D9QSo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

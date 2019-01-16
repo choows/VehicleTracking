@@ -1,0 +1,6 @@
+<StackLayout class="page">
+    <DatePicker *ngIf="isDate" class="picker" (loaded)="onPickerLoaded($event)" (dayChange)="onDayChanged($event)" (monthChange)="onMonthChanged($event)"
+        (yearChange)="onYearChanged($event)" editable="false"></DatePicker>
+    <TimePicker *ngIf="isTime" class="picker" (timeChange)="onTimeChanged($event)" editable="false"></TimePicker>
+    <button text="Done" (tap)="onDone()" width="100%" ></button>
+</StackLayout>
