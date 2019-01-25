@@ -99,7 +99,6 @@ export class UserService {
         return new Promise((resolve, reject) => {
             if (getConnectionType() != connectionType.none) {
                 this.SetToken();
-                this.readOffline();
                 firebase.getValue(path).then((result) => {
                     this.Data = result.value;
                     this.writefile(result.value);
@@ -258,7 +257,8 @@ export class UserService {
                         });
                     })
             } else {
-                this.writeOffline(path, data);
+               // this.writeOffline(path, data);
+               alert("Unable to upload in Offline mode.");
                 resolve();
             }
         }).catch((error) => {
@@ -269,6 +269,7 @@ export class UserService {
     /**
      * write the data into a file in offline mode. 
      */
+    /* 
     private key = "ab!87nd*@wq4PI89JM";  //a random generated string for seperate the data.
     private writeOffline(path: string, data: JSON) {
         alert("You are now Offline , report will shown while you are connected to network.");
@@ -282,11 +283,13 @@ export class UserService {
             console.log(err);
         });
     }
+    */
     /**
      * called while the user are currently online(connected to network)
      * 
      * fetch the data from the json file which stored before and upload it into firebase. 
      */
+    /*
     private readOffline() {
         const file = knownFolders.temp().getFile("OfflineData");
         file.readText().then((result) => {
@@ -307,7 +310,7 @@ export class UserService {
             console.log(err);
         });
     }
-
+    */
     /**
      * logout from firebase 
      */
