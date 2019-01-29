@@ -122,7 +122,7 @@ export class NewVehicleComponent implements OnInit {
     }
     savecontent() {
         this.onbusy = true;
-        let path: string = "Users/" + appSettings.getString("user_id");
+        let path: string = "Users/" + appSettings.getString("user_id") + "/Vehicles";
         let a = {
             "Image": this.image,
             "type": this.picked_vehicle,
@@ -131,7 +131,8 @@ export class NewVehicleComponent implements OnInit {
             "tank_capacity": this.tank_cap.toString(),
             "fuel_type": this.picked_fuel_type,
             "odometer": parseInt(this.Odometer.toString()),
-            "Image_path" : "-"
+            "Image_path" : "-",
+            "current_Odo" : parseInt(this.Odometer.toString()),
         };
         this.userservice.UploadData(path, a).then(() => {
             this.onbusy = false;
@@ -140,7 +141,6 @@ export class NewVehicleComponent implements OnInit {
         }).catch((error) => {
             console.log(error);
         });
-
     }
 
 }

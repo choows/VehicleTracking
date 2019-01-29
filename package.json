@@ -25,7 +25,7 @@
         "@angular/platform-browser-dynamic": "~7.0.0",
         "@angular/router": "~7.0.0",
         "nativescript-angular": "~7.0.0",
-        "nativescript-barcodescanner": "2.7.9",
+        "nativescript-barcodescanner": "3.0.0",
         "nativescript-camera": "4.1.1",
         "nativescript-cardview": "3.1.1",
         "nativescript-checkbox": "3.0.3",

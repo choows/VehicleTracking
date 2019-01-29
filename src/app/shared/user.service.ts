@@ -102,6 +102,7 @@ export class UserService {
                 firebase.getValue(path).then((result) => {
                     this.Data = result.value;
                     this.writefile(result.value);
+                    console.log(result.value["Vehicles"]);
                     resolve(result.value);
                 }).then(() => {
                     this.fetchBranch();
