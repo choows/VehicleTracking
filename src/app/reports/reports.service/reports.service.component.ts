@@ -15,6 +15,8 @@ import { ImageSource} from "tns-core-modules/image-source/image-source";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
+import { VehicleService } from "../../shared/vehicle.service";
+
 @Component({
     selector: "ReportsService",
     moduleId: module.id,
@@ -60,7 +62,7 @@ export class ReportsServiceComponent implements OnInit {
         this.DateStr = currentdate.toDateString();
         this.TimeStr = currentdate.toLocaleTimeString().slice(0, 9)
     }
-    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService,private routerextension: RouterExtensions, private userservice: UserService) { }
+    constructor(private vcRef: ViewContainerRef,private vehicleservice: VehicleService, private modal: ModalDialogService,private routerextension: RouterExtensions, private userservice: UserService) { }
     onNavBack() {
         this.routerextension.back();
     }
@@ -245,7 +247,6 @@ export class ReportsServiceComponent implements OnInit {
     submit() {
         this.onbusy = true;
         let current_date: string = this.date.toDateString();
-        let path: string = "Users/" + appSettings.getString("user_id") + "/" + appSettings.getString("vehicle_key") + "/Service";
         let data = {
             "Report_type": "Service",
             "Date": current_date,
@@ -266,10 +267,10 @@ export class ReportsServiceComponent implements OnInit {
             Odometer : this.NextService_Odometer,
         }
         this.userservice.NxtService(nxt);
-        this.upload(path, data);
+        this.upload(data);
     }
-    upload(path: string, data) {
-        this.userservice.UploadData(path, data).then(() => {
+    upload(data) {
+        this.vehicleservice.NewReport(data).then(() => {
             this.onbusy = false;
             this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {

@@ -17,6 +17,7 @@ import { ImageSource } from "tns-core-modules/image-source/image-source";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
+import { VehicleService } from "../../shared/vehicle.service";
 registerElement("MapView", () => require("nativescript-google-maps-sdk").MapView);
 /*
 the data will only submit when pressed, wont resubmit again when refresh or nvaigated
@@ -46,10 +47,10 @@ export class ReportsRefuelComponent implements OnInit {
     fuelVolume: string = "0.00";
     image: string;
     Odo_hint: number = appSettings.getNumber("Odo");
-    DateStr : string ;
-    TimeStr : string ;
+    DateStr: string;
+    TimeStr: string;
     //constructor
-    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private router: Router, private routerextension: RouterExtensions, private userservice: UserService) { }
+    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private router: Router, private routerextension: RouterExtensions, private userservice: UserService , private vehicleservice :VehicleService) { }
 
     //on init
     ngOnInit() {
@@ -237,9 +238,6 @@ export class ReportsRefuelComponent implements OnInit {
     submit() {
         this.onbusy = true;
         this.ontextchange();
-        let current_date: string = this.date.toDateString();
-        let currentTime: string = this.date.toLocaleTimeString().slice(0, 9);
-        let path: string = "Users/" + appSettings.getString("user_id") + "/" + appSettings.getString("vehicle_key") + "/Refuel";
         let data = {
             "Report_type": "Refuel",
             "Date": this.DateStr,
@@ -257,13 +255,13 @@ export class ReportsRefuelComponent implements OnInit {
             "Image": this.image,
             "Image_path": "-"
         };
-        this.upload(path, data);
+        this.upload(data);
     }
     onBlur(args) {
         args.object.dismissSoftInput();
     }
-    upload(path: string, data) {
-        this.userservice.UploadData(path, data).then(() => {
+    upload(data) {
+        this.vehicleservice.NewReport(data).then(() => {
             this.onbusy = false;
             this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {

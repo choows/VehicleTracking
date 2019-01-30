@@ -16,6 +16,8 @@ import { DatePicker } from "tns-core-modules/ui/date-picker";
 import * as imagepicker from "nativescript-imagepicker";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
+import { VehicleService } from "../../shared/vehicle.service";
+
 @Component({
     selector: "ReportsExpenses",
     moduleId: module.id,
@@ -44,7 +46,7 @@ export class ReportsExpensesComponent implements OnInit {
         this.DateStr = current_date.toDateString();
         this.TimeStr = current_date.toLocaleTimeString().slice(0, 9);
     }
-    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private routerextension: RouterExtensions, private userservice: UserService) { }
+    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService,private vehicleservice : VehicleService, private routerextension: RouterExtensions, private userservice: UserService) { }
     onNavBack() {
         this.routerextension.back();
     }
@@ -217,7 +219,6 @@ export class ReportsExpensesComponent implements OnInit {
     }
     submit() {
         this.onbusy = true;
-        let path: string = "Users/" + appSettings.getString("user_id") + "/" + appSettings.getString("vehicle_key") + "/Expenses";
         let data = {
             "Report_type": "Expenses",
             "Date": this.DateStr,
@@ -233,12 +234,12 @@ export class ReportsExpensesComponent implements OnInit {
             "Expenses_type": this.pickedexpensestype,
             "Amount": parseFloat(this.expensesAmount)
         }
-        this.upload(path, data);
+        this.upload(data);
     }
-    upload(path: string, data) {
-        this.userservice.UploadData(path, data).then(() => {
+    upload(data) {
+        this.vehicleservice.NewReport(data).then(() => {
             this.onbusy = false;
-            this.routerextension.navigate(["/home"], {clearHistory : true});
+            this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {
             console.log(error);
         });

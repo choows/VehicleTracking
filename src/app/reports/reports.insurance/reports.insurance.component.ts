@@ -14,6 +14,8 @@ import { ImageSource} from "tns-core-modules/image-source/image-source";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
+import { VehicleService } from "../../shared/vehicle.service";
+
 @Component({
     selector: "ReportsInsurance",
     moduleId: module.id,
@@ -34,7 +36,7 @@ export class ReportsInsuranceComponent implements OnInit {
     ngOnInit() {
         this.DateStr = new Date(Date.now()).toDateString() ;
     }
-    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private routerextension: RouterExtensions, private userservice: UserService) { }
+    constructor(private vcRef: ViewContainerRef,private vehicleservice : VehicleService, private modal: ModalDialogService, private routerextension: RouterExtensions, private userservice: UserService) { }
     onNavBack() {
         this.routerextension.back();
     }
@@ -140,7 +142,6 @@ export class ReportsInsuranceComponent implements OnInit {
     }
     submit() {
         this.onbusy = true;
-        let path: string = "Users/" + appSettings.getString("user_id") + "/" + appSettings.getString("vehicle_key") + "/Insurance";
         let data = {
             "Report_type": "Insurance",
             "Date":  this.DateStr,
@@ -151,12 +152,12 @@ export class ReportsInsuranceComponent implements OnInit {
             "Type": this.pickedType,
             "Image_path" : "-"
         }
-            this.upload(path, data);
+            this.upload(data);
     }
-    upload(path: string, data) {
-        this.userservice.UploadData(path, data).then(() => {
+    upload(data) {
+        this.vehicleservice.NewReport(data).then(() => {
             this.onbusy = false;
-            this.routerextension.navigate(["/home"], {clearHistory : true});
+            this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {
             console.log(error);
         });

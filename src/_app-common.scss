@@ -4,6 +4,7 @@
 .fa {
     font-family: "FontAwesome";
 }
+
 // Common page class
 .page-content {
     .page-placeholder {
@@ -12,7 +13,6 @@
         vertical-align: center;
         horizontal-align: center;
     }
-
     .page-icon {
         font-size: 72;
         vertical-align: top;
@@ -27,18 +27,16 @@ ActionBar .action-bar-title {
     horizontal-align: center;
 }
 
- // Drawer navigation custom styles
+// Drawer navigation custom styles
 $sidedrawer-header-image-size: 60;
 $sidedrawer-header-image-offset-top: 20;
 $sidedrawer-header-image-offset-bottom: 5;
 $sidedrawer-list-item-offset-left: 15;
 $sidedrawer-list-icon-offset: 10;
 $sidedrawer-list-icon-size: 20;
-
 .sidedrawer {
     &.sidedrawer-left {
         background-color: $ab-background;
-
         .sidedrawer-header-image {
             color: $background-dark;
             height: $sidedrawer-header-image-size;
@@ -48,26 +46,21 @@ $sidedrawer-list-icon-size: 20;
             margin-bottom: $sidedrawer-header-image-offset-bottom;
             margin-top: $sidedrawer-header-image-offset-top;
         }
-
         .footnote {
             color: rgba($ab-color, 0.5);
         }
     }
-
     .sidedrawer-header {
         background-color: #886aea;
-
         .sidedrawer-header-brand {
             color: $ab-color;
         }
     }
     .sidedrawer-content {
         background-color: $side-drawer-background;
-
         $sidedrawer-list-item-offset-left: 15;
         $sidedrawer-list-icon-offset: 10;
         $sidedrawer-list-icon-size: 20;
-
         .sidedrawer-list-item {
             padding-left: $sidedrawer-list-item-offset-left;
             Label {
@@ -86,99 +79,99 @@ $sidedrawer-list-icon-size: 20;
             }
         }
     }
-    
 }
 
-
 //List View
-.list-group{
+.list-group {
     background-color: transparent;
-    .list-group-item{
+    .list-group-item {
         background-color: transparentize($color: black, $amount: 0.5);
         border-width: 0.2;
     }
 }
 
 //Login and Signup Page
-.login_background{
-        background-image: url("res://background_login");
-        background-repeat: no-repeat;
-        background-size: cover;
+.login_background {
+    background-image: url("res://background_login");
+    background-repeat: no-repeat;
+    background-size: cover;
+    vertical-align: center;
+    height: 100%;
+}
+
+.register_background {
+    background-image: url("res://background_register");
+    background-repeat: no-repeat;
+    background-size: cover;
+    vertical-align: center;
+    height: 100%;
+}
+
+.email {
+    border-color: white;
+    width: 90%;
+    color: aliceblue;
+    height: 15%;
+}
+
+.password {
+    border-color: white;
+    color: white;
+    width: 90%;
+    height: 15%;
+}
+
+.Logincontainer {
+    background-color: transparentize($color: white, $amount: 0.6);
+    vertical-align: center;
+    border-color: white;
+    margin-top: 30%;
+    border-width: 1;
+    width: 80%;
+    color: black;
+}
+
+//Form input style
+.Form {
+    background: #d4d4d4;
+    color: black;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .Main_Label {
+        font-size: 23;
+        text-align: left;
+        margin-left: 5;
+        width: 100%;
+    }
+    .Form_container {
         vertical-align: center;
-        height: 100%;
-    }
-    .register_background{
-        background-image: url("res://background_register");
-        background-repeat: no-repeat;
-        background-size: cover;
-        vertical-align: center;
-        height: 100%;
-    }
-    .email{
-        border-color: white;
-        width: 90%;
-        color: aliceblue;
-        height : 15%;
-    }
-    .password{
-        border-color: white;
-        color: white;
-        width: 90%;
-        height: 15%;
-    }
-    .Logincontainer{
-        background-color: transparentize($color: white, $amount: 0.6);
-        vertical-align: center;
-        border-color: white;
-        margin-top: 30%;
         border-width: 1;
-        width: 80%;
-        color: black;
-    }
-
-
-    //Form input style
-    .Form{
-        background: #d4d4d4;
-        color: black;
-        background-repeat: no-repeat;
-        background-size: cover;
-        .Main_Label{
-            font-size: 23;
-            text-align: left;
-            margin-left: 5;
-            width: 100%;
-        }
-        .Form_container{
-            vertical-align: center;
-            border-width: 1;
-            margin: 5%;
-            margin-top: 2%;
-            background-color: transparentize($color: white, $amount: 0.5);
-            width: 100%;
-        
-        .picker{
+        margin: 5%;
+        margin-top: 2%;
+        background-color: transparentize($color: white, $amount: 0.5);
+        width: 100%;
+        .picker {
             height: 100;
             width: 80%;
             font-size: 30;
             font-weight: 400;
             color: black;
         }
-        .submit_button{
+        .submit_button {
             background-color: transparentize($color: blue, $amount: 0.3);
             height: 40%;
             width: 100%;
             font-weight: 600;
         }
-        .textfield{
+        .textfield {
             height: 50;
             width: 80%;
         }
-        .side-list-picker{
+        .side-list-picker {
             width: 50%;
             height: 100%;
         }
-        .side-button{
+        .side-button {
             width: 50%;
             height: 100%;
             border-color: #333b47;
@@ -188,10 +181,10 @@ $sidedrawer-list-icon-size: 20;
             border-width: 1ch;
             margin-right: 3%;
         }
-        .detail-container-box{
+        .detail-container-box {
             vertical-align: center;
             border-width: 0ch;
-            .sub-label{
+            .sub-label {
                 margin-left: 5;
                 margin-right: 5;
                 margin-top: 10;
@@ -200,190 +193,184 @@ $sidedrawer-list-icon-size: 20;
                 vertical-align: center;
             }
         }
-        .MapView{
+        .MapView {
             height: 100%;
             width: 100%;
-            .Map{
+            .Map {
                 width: 100%;
-                height: 80%;
+                height: 60%;
             }
-            .coordinate_submit_button{
-                width : 100%;
-                height : 20%;
+            .coordinate_submit_button {
+                width: 100%;
+                height: 40%;
                 background: blue;
                 color: white;
             }
         }
-
     }
-    }
+}
 
-    //View for Master-branch-view page
-    .BranchView{
-        background: white;
-        background-repeat: no-repeat;
-        background-size: cover;
-        .no-item-text{
-            width: 100%;
-            vertical-align: center;
-            text-align: center;
-            font-size: 20;
-            margin-top: 50%;
-        }
+//View for Master-branch-view page
+.BranchView {
+    background: white;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .no-item-text {
+        width: 100%;
+        vertical-align: center;
+        text-align: center;
+        font-size: 20;
+        margin-top: 50%;
     }
+}
 
-    //View for Statistics page
-    .Statistics{
-        RadCartesianChart{
-            color: black;
-            width: 100%;
-            height: 100%;
-        }
+//View for Statistics page
+.Statistics {
+    RadCartesianChart {
+        color: black;
+        width: 100%;
+        height: 100%;
     }
-    .img-circle{
-        border-radius: 0%;
+}
+
+.img-circle {
+    border-radius: 0%;
+}
+
+//view for the show detail page 
+.main {
+    background-color: #2773f7;
+    .label {
+        color: white;
+        font-size: 25;
+        text-align: right;
+        width: 50%;
+        margin-right: 15;
+        vertical-align: middle;
+        font-weight: 500;
+        margin-top: 25%;
+        height: 50%;
     }
-
-
-    //view for the show detail page 
-    .main{ 
+    .photo {
+        width: 150;
+        height: 150;
+    }
+    .icon {
+        width: 100%;
+    }
+    .general {
+        width: 100%;
+        font-size: 30;
+        text-align: left;
+        color: white;
+        margin-left: 20;
+    }
+    .box {
+        flex-direction: row;
+        margin-bottom: 10;
+        height: 70;
+        background-color: #0250f7;
+        border-radius: 20%;
+        margin-left: 15;
+        margin-right: 15;
+    }
+    .note_box {
+        margin-left: 15;
+        margin-right: 15;
+        flex-direction: row;
+        margin-bottom: 10;
+        height: auto;
         background-color: #2773f7;
-        .label{
-            color:white;
-            font-size: 25;
-            text-align: right;
-            width: 50%;
-            margin-right: 15;
-            vertical-align: middle;
-            font-weight: 500;
-            margin-top: 25%;
-            height: 50%;
-        }
-        .photo{
-            width: 150;
-            height: 150;
-        }
-        .icon{
-            width: 100%;
-        }
-        
-        .general{
-            width: 100%;
-            font-size: 30;
-            text-align: left;
-            color: white;
-            margin-left: 20;
-        }
-        .box{
-            flex-direction: row;
-            margin-bottom: 10;
-            height: 70;
-            background-color:#0250f7 ;
-            border-radius: 20%;
-            margin-left: 15;
-            margin-right: 15;
-        }
-        .note_box{
-            margin-left: 15;
-            margin-right: 15;
-            flex-direction: row;
-            margin-bottom: 10;
-            height: auto;
-            background-color: #2773f7;
-        
-        }
-        .container{
-            width: 50%;
-            height: 100%;
-        }
-        .close{
-            width: 100%;
-            height: 100%;
-            color: black ;
-            font-weight: bold;
-            font-size: 20;
-        }
-        .label_main{
-            color:white;
-            font-size: 25;
-            text-align: right;
-            width: 100%;
-            margin-right: 25;
-            vertical-align: middle;
-            font-weight: 500;
-            margin-top: 15%;
-        }
-        .label_detail{
-            color: white;
-            font-size: 15;
-            font-weight: 500;
-            width: 100%;
-            text-align: right;
-            margin-right: 25;
-        }
-        .label_left{
-            color: white;
-            font-size: 21;
-            margin-left: 15;
-            text-align: left;
-            width: 50%;
-            vertical-align: middle;
-            font-weight: 400;
-            margin-top: 25%;
-        }
-        .note{
-            margin-left: 10;
-            font-size: 20;
-            margin-right: 20;
-            color: white;
-            border-color: #0250f7;
-            border-width: 0%;
-            width: 60%;
-            height: 100%;
-        }
-        
     }
-    
+    .container {
+        width: 50%;
+        height: 100%;
+    }
+    .close {
+        width: 100%;
+        height: 100%;
+        color: black;
+        font-weight: bold;
+        font-size: 20;
+    }
+    .label_main {
+        color: white;
+        font-size: 25;
+        text-align: right;
+        width: 100%;
+        margin-right: 25;
+        vertical-align: middle;
+        font-weight: 500;
+        margin-top: 15%;
+    }
+    .label_detail {
+        color: white;
+        font-size: 15;
+        font-weight: 500;
+        width: 100%;
+        text-align: right;
+        margin-right: 25;
+    }
+    .label_left {
+        color: white;
+        font-size: 21;
+        margin-left: 15;
+        text-align: left;
+        width: 50%;
+        vertical-align: middle;
+        font-weight: 400;
+        margin-top: 25%;
+    }
+    .note {
+        margin-left: 10;
+        font-size: 20;
+        margin-right: 20;
+        color: white;
+        border-color: #0250f7;
+        border-width: 0%;
+        width: 60%;
+        height: 100%;
+    }
+}
 
-    //for general list
-.MainBackground{
+//for general list
+.MainBackground {
     background: white;
     .listItemStackLayout {
-    background-color: transparent;
-    padding-left: 5;
-    min-height: 200;
-}
-.list-group{
-    background-color: transparent;
-}
-.list-group-items{
-    background-color: transparent;
-    color: black;
-}
-.list-view{
-    background-color: transparent;
-}
-.delete{
-  width: 100%;
-  background-color: transparent;
-}
-}
-
-
-//for list view page
-.ListBackGround{
-    .listItemStackLayout {
-        background-color:transparent;
+        background-color: transparent;
         padding-left: 5;
         min-height: 200;
     }
-    .Date{
+    .list-group {
+        background-color: transparent;
+    }
+    .list-group-items {
+        background-color: transparent;
+        color: black;
+    }
+    .list-view {
+        background-color: transparent;
+    }
+    .delete {
+        width: 100%;
+        background-color: transparent;
+    }
+}
+
+//for list view page
+.ListBackGround {
+    .listItemStackLayout {
+        background-color: transparent;
+        padding-left: 5;
+        min-height: 200;
+    }
+    .Date {
         font-size: medium;
         color: black;
         width: 100%;
         margin-left: 20;
     }
-    .list-group-item{
+    .list-group-item {
         background: transparent;
         border-color: black;
         border-width: 0.03;
@@ -391,154 +378,150 @@ $sidedrawer-list-icon-size: 20;
     }
     .fab-button {
         height: 60;
-        width: 60; 
+        width: 60;
         margin: 15;
         margin-top: 75%;
         background-color: #1062e5;
-        horizontal-align: right; 
+        horizontal-align: right;
     }
     .fab-button_1 {
         height: 60;
-        width: 60; 
+        width: 60;
         margin: 15;
         margin-top: 55%;
         background-color: pink;
-        horizontal-align: right; 
+        horizontal-align: right;
         opacity: 0;
     }
     .fab-button_2 {
         height: 60;
-        width: 60; 
+        width: 60;
         margin: 15;
         margin-top: 35%;
         background-color: yellow;
-        horizontal-align: right; 
+        horizontal-align: right;
         opacity: 0;
     }
     .fab-button_3 {
         height: 60;
-        width: 60; 
+        width: 60;
         margin: 15;
         margin-top: 51%;
         margin-right: 25%;
         background-color: lightblue;
-        horizontal-align: right; 
+        horizontal-align: right;
         opacity: 0;
     }
     .fab-button_4 {
         height: 60;
-        width: 60; 
+        width: 60;
         margin: 15;
         margin-top: 75%;
         margin-right: 40%;
         background-color: lightskyblue;
-        horizontal-align: right; 
+        horizontal-align: right;
         opacity: 0;
     }
     .fab-button_5 {
         height: 60;
-        width: 60; 
+        width: 60;
         margin: 15;
         margin-top: 75%;
         margin-right: 22%;
         background-color: palegreen;
-        horizontal-align: right; 
+        horizontal-align: right;
         opacity: 0;
     }
-    .list-image{
+    .list-image {
         height: 100;
         width: 70;
     }
-        background: white;
+    background: white;
+}
+
+//Statistics page.
+.Statistics {
+    .Header {
+        width: 100%;
+        font-size: 25;
+        font-weight: 500;
+        text-align: center;
+        color: black;
     }
-
-
-    //Statistics page.
-    .Statistics{
-        .Header{
-            width: 100%;
-            font-size: 25;
-            font-weight: 500;
-            text-align: center;
-            color: black;
-        }
-        .bar-chart{
-            height: 90%;
-            color: black;
-            margin-left: 5%;
-            margin-right: 5%;
-            font-weight: 300;
-        }
+    .bar-chart {
+        height: 90%;
+        color: black;
+        margin-left: 5%;
+        margin-right: 5%;
+        font-weight: 300;
     }
+}
 
-
-
-    //UserProfile page 
-    .User_profile{
-        .Main_Label{
-            font-size: 18;
-            color: white;
-            margin-top: 30%;
-            width: 70%;
-            margin-left: 15;
-        }
-        .Sub_Label{
-            font-size: 21;
-            color: white;
-            margin-top: 30%;
-            text-align: right;
-            width: 30%;
-            margin-right: 15;
-        }
-        .top-background{
-            background-image: url("res://background_photo");
-            background-repeat: no-repeat; 
-            background-position: center;
-            background-size: cover;
-        }
-        .profile_pic{
-            height: 100;
-            width: 100;
-            padding: 0;
-            margin-top: 15;
-            
-        }
-        .profile_pic_1{
-            padding: 0;
-            margin-top: 15;
-            border-radius: 50%;
-            width: 100%;
-            height : 70%;
-        }
-        .main_username{
-            font-size: 25;
-            color: black;
-            text-align: center;
-            margin-top: 1%;
-            border: none;
-            background-color: transparent;
-            border-color: transparent;
-        }
-        .sub_main_email{
-            font-size: 15;
-            color: black;
-            text-align: center;
-            margin-top: 3%;
-        }
-        .bottom_layout{
-            background-color:#886aea;
-            border-color: #F8F8F8;
-            border-bottom-width: 0.1;
-            height: 90 ;
-            width: 100%;
-        }
-        .bottom_box{
-            width:100% ;
-            background-color:#003366 ;
-            height: 100%;
-        }
+//UserProfile page 
+.User_profile {
+    .Main_Label {
+        font-size: 18;
+        color: white;
+        margin-top: 30%;
+        width: 70%;
+        margin-left: 15;
     }
-
-    .action-bar{
-        background: #886aea;
+    .Sub_Label {
+        font-size: 21;
+        color: white;
+        margin-top: 30%;
+        text-align: right;
+        width: 30%;
+        margin-right: 15;
     }
+    .top-background {
+        background-image: url("res://background_photo");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+    .profile_pic {
+        height: 100;
+        width: 100;
+        padding: 0;
+        margin-top: 15;
+    }
+    .profile_pic_1 {
+        padding: 0;
+        margin-top: 15;
+        border-radius: 50%;
+        width: 100%;
+        height: 70%;
+    }
+    .main_username {
+        font-size: 25;
+        color: black;
+        text-align: center;
+        margin-top: 1%;
+        border: none;
+        background-color: transparent;
+        border-color: transparent;
+    }
+    .sub_main_email {
+        font-size: 15;
+        color: black;
+        text-align: center;
+        margin-top: 3%;
+    }
+    .bottom_layout {
+        background-color: #886aea;
+        border-color: #F8F8F8;
+        border-bottom-width: 0.1;
+        height: 90;
+        width: 100%;
+    }
+    .bottom_box {
+        width: 100%;
+        background-color: #003366;
+        height: 100%;
+    }
+}
+
+.action-bar {
+    background: #886aea;
+}

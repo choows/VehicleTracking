@@ -5,9 +5,10 @@ import * as camera from "nativescript-camera";
 import { Image } from "ui/image";
 import { ListPicker } from "tns-core-modules/ui/list-picker";
 import * as appSettings from "tns-core-modules/application-settings";
-import { UserService } from "../shared/user.service";
-import { ImageSource} from "tns-core-modules/image-source/image-source";
+//import { UserService } from "../shared/user.service";
+import { ImageSource } from "tns-core-modules/image-source/image-source";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
+import { VehicleService } from "../shared/vehicle.service";
 @Component({
     selector: "NewVehicle",
     moduleId: module.id,
@@ -28,11 +29,11 @@ export class NewVehicleComponent implements OnInit {
     picked_fuel_type: string;
     picked_manufacturer: string;
     picked_vehicle: string;
-    onbusy : boolean = false;
+    onbusy: boolean = false;
     /**
      * function declare as below. 
      */
-    constructor(private routerextension: RouterExtensions, private userservice: UserService) { }
+    constructor(private routerextension: RouterExtensions, private vehicleservice : VehicleService) { }
     onNavBack() {
         this.routerextension.back();
     }
@@ -59,14 +60,14 @@ export class NewVehicleComponent implements OnInit {
                     if (applicationModule.ios) {
                         let file = knownFolders.temp().getFile("PhotoImage.png");
                         let image_source = new ImageSource();
-                        image_source.fromAsset(imageAsset).then((res)=>{
-                            res.saveToFile(file.path , "png");
-                        }).then(()=>{
+                        image_source.fromAsset(imageAsset).then((res) => {
+                            res.saveToFile(file.path, "png");
+                        }).then(() => {
                             this.image = file.path;
                         })
-                        .catch((err)=>{
-                            console.log(err);
-                        });
+                            .catch((err) => {
+                                console.log(err);
+                            });
                     }
                 }
             }).catch((err) => {
@@ -122,7 +123,7 @@ export class NewVehicleComponent implements OnInit {
     }
     savecontent() {
         this.onbusy = true;
-        let path: string = "Users/" + appSettings.getString("user_id") + "/Vehicles";
+       // let path: string = "Users/" + appSettings.getString("user_id") + "/Vehicles";
         let a = {
             "Image": this.image,
             "type": this.picked_vehicle,
@@ -131,13 +132,13 @@ export class NewVehicleComponent implements OnInit {
             "tank_capacity": this.tank_cap.toString(),
             "fuel_type": this.picked_fuel_type,
             "odometer": parseInt(this.Odometer.toString()),
-            "Image_path" : "-",
-            "current_Odo" : parseInt(this.Odometer.toString()),
+            "Image_path": "-",
+            "current_Odo": parseInt(this.Odometer.toString()),
         };
-        this.userservice.UploadData(path, a).then(() => {
+        this.vehicleservice.NewVehicle(a).then(()=>{
             this.onbusy = false;
-        }).then(() => {
-            this.routerextension.navigate(["/home"], {clearHistory : true});
+        }).then(()=>{
+            this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {
             console.log(error);
         });

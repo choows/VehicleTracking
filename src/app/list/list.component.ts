@@ -10,9 +10,10 @@ import { registerElement } from "nativescript-angular/element-registry";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { DisplayReportComponent } from "../display_report/display_report.component";
-import {Color} from "color";
-import {isIOS} from "platform"
+import { Color } from "color";
+import { isIOS } from "platform"
 import { CardView } from 'nativescript-cardview';
+import { VehicleService } from "../shared/vehicle.service";
 registerElement('CardView', () => CardView);
 registerElement("Fab", () => require("nativescript-floatingactionbutton").Fab);
 
@@ -25,8 +26,8 @@ export class ListComponent implements OnInit {
     data = [];
     name = "";
     slide_out: boolean = true;  //to check the float action button whether slided out or not. 
-    branch :boolean = false ;  // to check whether is a branch view or not 
-    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private routerextension: RouterExtensions, private route: ActivatedRoute, private userservice: UserService) {}
+    branch: boolean = false;  // to check whether is a branch view or not 
+    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private routerextension: RouterExtensions, private route: ActivatedRoute, private vehicleservice: VehicleService) { }
     /**
      * allow the user to navigate back 
      */
@@ -42,13 +43,13 @@ export class ListComponent implements OnInit {
      * specifically for iOS 
      * to declare the background color of listview.
      */
-    onItemLoading(args){
-        if(isIOS){
+    onItemLoading(args) {
+        if (isIOS) {
             var newcolor = new Color(0, 0, 0, 0);
             args.ios.backgroundView.backgroundColor = newcolor.ios;
-            args.object.ios.pullToRefreshView.backgroundColor = newcolor.ios; 
+            args.object.ios.pullToRefreshView.backgroundColor = newcolor.ios;
         }
- 
+
     }
     /**
      * called in initialization.
@@ -56,7 +57,14 @@ export class ListComponent implements OnInit {
     ngOnInit() {
         this.branch = appSettings.getBoolean("Branch");
         this.name = appSettings.getString("plate_no");
-        this.data = this.userservice.ReportList(this.branch);
+        this.FetchReport();
+    }
+
+    /**
+     * fetch the reports list from background 
+     */
+    FetchReport() {
+        this.data = this.vehicleservice.GetReport();
     }
 
     /**
@@ -64,17 +72,14 @@ export class ListComponent implements OnInit {
      * remove the vehicle list from service. 
      */
     RemoveReport(data) {
-        let path: string = "Users/" + appSettings.getString("user_id") + "/" + appSettings.getString("vehicle_key");
-        console.log("user id : " + appSettings.getString("user_id"));
-        console.log("vehicle id : " + appSettings.getString("vehicle_key"));
         dialogs.confirm({
             title: "Confirm to Delete ?",
             okButtonText: "Delete",
             cancelButtonText: "Cancel",
         }).then(result => {
             if (result) {
-                this.userservice.Remove_Report(path, data);
                 this.data.splice(this.data.indexOf(data), 1);
+                this.vehicleservice.Remove_Report(data);
             }
         });
     }
@@ -142,17 +147,18 @@ export class ListComponent implements OnInit {
      */
     onPullToRefreshInitiated(args) {
         this.data = null;
-        this.data = this.userservice.ReportList(this.branch);
+        // this.data = this.userservice.ReportList(this.branch);
+        this.FetchReport();
         let listview = args.object;
-        if(isAndroid){
+        if (isAndroid) {
             listview.notifyPullToRefreshFinished();
-        }else{
-            setTimeout(()=>{
+        } else {
+            setTimeout(() => {
                 listview.notifyPullToRefreshFinished();
-            } , 1000);
+            }, 1000);
         }
     }
-    
+
     /**
      * below are all the navigation function and animation function for float action button. 
      */

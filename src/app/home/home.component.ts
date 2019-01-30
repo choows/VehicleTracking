@@ -9,8 +9,9 @@ import { AppComponent } from "../app.component";
 import { ListViewEventData } from "nativescript-ui-listview";
 import { screen } from "tns-core-modules/platform/platform";
 import * as dialogs from "tns-core-modules/ui/dialogs";
-import {Color} from "color";
-import {isIOS} from "platform"
+import { Color } from "color";
+import { isIOS } from "platform"
+import { VehicleService } from "../shared/vehicle.service";
 @Component({
     selector: "Home",
     moduleId: module.id,
@@ -19,9 +20,9 @@ import {isIOS} from "platform"
 
 export class HomeComponent implements OnInit {
     isBusy: boolean = false;
-    allowed = true ;
+    allowed = true;
     data = [];
-    constructor(private appcomponent: AppComponent, private routerextension: RouterExtensions, private userservice: UserService) { }
+    constructor(private appcomponent: AppComponent, private routerextension: RouterExtensions, private userservice: UserService, private vehicleservice: VehicleService) { }
     /**
      * adding new vehicle function. 
      * redirect to the new_vehicle component.
@@ -38,14 +39,9 @@ export class HomeComponent implements OnInit {
      */
     onItemTap(args) {
         appSettings.setString("plate_no", this.data[args.index].vehicle_plate_no);
-        if (this.data[args.index].vehicle_key.length > 15) {
-            appSettings.setString("vehicle_key", this.data[args.index].vehicle_key.toString());
-        }
-        if(this.data[args.index].current_odo ){
+
         appSettings.setNumber("Odo", this.data[args.index].current_odo);
-        }else{
-            appSettings.setNumber("Odo", 123456);
-        }
+
         this.routerextension.navigate(["/list"], {
             transition: {
                 name: "slideLeft",
@@ -73,11 +69,10 @@ export class HomeComponent implements OnInit {
      * fetch the data from service. 
      */
     ngOnInit() {
-        appSettings.remove("vehicle_key");
         appSettings.remove("plate_no");
         appSettings.remove("Branch");
         appSettings.remove("Odo");
-        this.userservice.GetUserDetail().then((result)=>{
+        this.userservice.GetUserDetail().then((result) => {
         });
         this.appcomponent.enableGesture();
         this.appcomponent.RefreshProfile();
@@ -85,7 +80,7 @@ export class HomeComponent implements OnInit {
     }
     fetchQuery() {
         this.data = [];
-        this.userservice.VehicleList().then((result : [])=>{
+        this.vehicleservice.GetVehicle().then((result: []) => {
             this.data = result;
         })
     }
@@ -97,7 +92,7 @@ export class HomeComponent implements OnInit {
      * set time out is needed in the ios platform to enable the icon to pull back. 
      */
     onPullToRefreshInitiated(args) {
-        
+
         this.fetchQuery();
         let listview = args.object;
         if (isAndroid) {
@@ -123,16 +118,16 @@ export class HomeComponent implements OnInit {
     }
     onCellSwiping(args) {
         let width = screen.mainScreen.widthPixels;
-        if( args.data.x == -width && this.allowed){
-            dialogs.confirm("Comfirm to Delete ?").then((res)=>{
-                if(res){
+        if (args.data.x == -width && this.allowed) {
+            dialogs.confirm("Comfirm to Delete ?").then((res) => {
+                if (res) {
                     this.deleteitem(this.data[args.index]);
-                }else{
+                } else {
                     //restore the listview..
                     let listview = args.object;
                     listview.notifySwipeToExecuteFinished();
                 }
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
             });
             this.allowed = false;
@@ -144,7 +139,7 @@ export class HomeComponent implements OnInit {
      */
     deleteitem(args) {
         let path: string = "Users/" + appSettings.getString("user_id");
-        this.userservice.RemoveItem(path, args);
+        this.vehicleservice.RemoveVehicle(args);
         this.data.splice(this.data.indexOf(args), 1);
     }
     /**
@@ -152,12 +147,12 @@ export class HomeComponent implements OnInit {
      * specially for iOS
      * used to declare the backround color in iOS since declaration is not function in css 
      */
-    onItemLoading(args){
-        if(isIOS){
+    onItemLoading(args) {
+        if (isIOS) {
             var newcolor = new Color(0, 0, 0, 0);
             args.ios.backgroundView.backgroundColor = newcolor.ios;
-            args.object.ios.pullToRefreshView.backgroundColor = newcolor.ios; 
+            args.object.ios.pullToRefreshView.backgroundColor = newcolor.ios;
         }
- 
+
     }
 }

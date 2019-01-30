@@ -197,7 +197,7 @@ export class UserService {
      * 
      * upload the image to the firebase storage and return the link of upload and the download url. 
      */
-    private uploadImage(image_path) {
+    uploadImage(image_path) {
         return new Promise((resolve, reject) => {
             if (image_path == null) {
                 let result = {
