@@ -160,7 +160,7 @@ export class MasterBranchViewComponent implements OnInit {
      * adding the master user id. 
      */
     OnAddMaster(master_id: string) {
-        this.userservice.AddMaster(master_id);
+        this.branchservice.AddMaster(master_id);
     }
 
     /**

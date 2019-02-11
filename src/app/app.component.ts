@@ -10,6 +10,7 @@ import * as appSettings from "tns-core-modules/application-settings";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { initializeOnAngular } from "nativescript-web-image-cache";
 import { connectionType, getConnectionType } from "tns-core-modules/connectivity/connectivity";
+import { ProfileService } from "../app/shared/user_profile.service";
 @Component({
     moduleId: module.id,
     selector: "ns-app",
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
     PhotoUrl: string = "https://firebasestorage.googleapis.com/v0/b/finalyearproject-ed21e.appspot.com/o/sample_image%2Fdownload.jpg?alt=media&token=d1436475-5593-4b93-adaa-d79c13689e87";
     email: string = "";
 
-    constructor(private router: Router, private routerExtensions: RouterExtensions, private userservice: UserService) {
+    constructor(private profileservice: ProfileService, private router: Router, private routerExtensions: RouterExtensions, private userservice: UserService) {
         initializeOnAngular();
     }
 
@@ -34,7 +35,7 @@ export class AppComponent implements OnInit {
      * 
      * modify the sidedrawer component. 
      */
-     
+
     @ViewChild("sidedrawer") sidedrawer: RadSideDrawer;
     enableGesture() {
         this.sidedrawer.gesturesEnabled = true;
@@ -45,7 +46,7 @@ export class AppComponent implements OnInit {
     }
     RefreshProfile() {
         //to refresh the heading image and detail in the side drawer. 
-        this.userservice.GetUserDetail().then((result) => {
+        this.profileservice.GetUserDetail().then((result) => {
             this.UserName = result["name"];
             this.email = result["email"];
             this.PhotoUrl = result["profileImageURL"];
@@ -117,7 +118,7 @@ export class AppComponent implements OnInit {
             }).catch((err) => {
                 console.log(err);
             });
-        }else{
+        } else {
             alert("You Are not allowed to Logout in Offline Mode.");
         }
 

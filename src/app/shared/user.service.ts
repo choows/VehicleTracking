@@ -119,34 +119,6 @@ export class UserService {
         });
     }
 
-    /**
-     * return the user detail from firebase. 
-     */
-    GetUserDetail() {
-        return new Promise((resolve, reject) => {
-            firebase.getCurrentUser().then((result) => {
-                if (result.name == null && result.profileImageURL == null) {
-                    result.profileImageURL = "https://firebasestorage.googleapis.com/v0/b/backupfirebaseproject.appspot.com/o/sample%2Fno%20image.png?alt=media&token=14554fd3-1c8d-4b78-bf0e-431b075ed11c";
-                    dialogs.prompt({
-                        title: "Please Enter the Display Name",
-                        okButtonText: "OK",
-                        inputType: dialogs.inputType.text
-                    }).then((r) => {
-                        result.name = r.text;
-                    }).then(() => {
-                        this.UpdateProfile(result.name, result.profileImageURL);
-                        resolve(result);
-                    })
-                } else {
-                    resolve(result);
-                }
-            }).catch((error) => {
-                reject(error);
-            });
-        }).catch((error) => {
-            console.log(error);
-        });
-    }
 
     /**
      * 
@@ -164,56 +136,6 @@ export class UserService {
         }).catch((error) => {
             console.log(error);
         });
-    }
-
-    /**
-     * 
-     * allow user to update the personal profile picture and display name. 
-     */
-    UpdateProfile(name: string, profilePicture: string) {
-        if (profilePicture.includes("https")) {
-            firebase.updateProfile({
-                displayName: name,
-                photoURL: profilePicture,
-            }).catch((error) => {
-                console.log(error);
-            });
-        } else {
-            this.uploadImage(profilePicture).then((result) => {
-                firebase.updateProfile({
-                    displayName: name,
-                    photoURL: result["link"].toString()
-                }).catch((error) => {
-                    console.log(error);
-                });
-            }).catch((error) => {
-                console.log(error);
-            });
-        }
-
-        let user_profile = { "Username": name, "Profile_Pic": profilePicture };
-        let path = "Users/" + appSettings.getString("user_id") + "/User_Profile";
-        firebase.setValue(path, user_profile).then((res) => { }).catch((err) => { console.log(err) });
-    }
-
-    /*
-    * return summary of the data.
-    */
-    getTotalNumberOfVehicle() {
-        return new Promise((resolve, reject) => {
-            resolve(this.Data.Summary);
-        })
-    }
-
-    /**
-     * return number of branch under the user. 
-     */
-    getNumberOfBranch() {
-        let count = 0;
-        for (var branch in this.Data.Branch) {
-            count++;
-        }
-        return count;
     }
 
     /**
@@ -263,19 +185,6 @@ export class UserService {
                 console.log(err);
             });
     }
-
-    /**
-     * 
-     * add new master to this user. 
-     * the current master will be override.
-     */
-    AddMaster(master_id: string) {
-        let path = "Users/" + appSettings.getString("user_id") + "/Master";
-        firebase.setValue(path, { "ID": master_id }).then((result) => {
-        }).catch((err) => {
-            console.log(err);
-        });
-    }
     NxtService(nxt){
         let path: string = "Users/" + appSettings.getString("user_id") + "/" + appSettings.getString("vehicle_key") + "/Next_Service";
         firebase.setValue(path , nxt).catch((err)=>{
@@ -283,3 +192,4 @@ export class UserService {
         });
     }
 }
+//

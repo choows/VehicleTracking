@@ -13,6 +13,7 @@ import { Color } from "color";
 import { isIOS } from "platform"
 import { VehicleService } from "../shared/vehicle.service";
 import { BranchService } from "../shared/branch.service";
+import { ProfileService } from "../shared/user_profile.service";
 @Component({
     selector: "Home",
     moduleId: module.id,
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
     isBusy: boolean = false;
     allowed = true;
     data = [];
-    constructor(private branchserviec : BranchService,private appcomponent: AppComponent, private routerextension: RouterExtensions, private userservice: UserService, private vehicleservice: VehicleService) { }
+    constructor(private profileservice: ProfileService, private branchserviec: BranchService, private appcomponent: AppComponent, private routerextension: RouterExtensions, private userservice: UserService, private vehicleservice: VehicleService) { }
     /**
      * adding new vehicle function. 
      * redirect to the new_vehicle component.
@@ -73,7 +74,7 @@ export class HomeComponent implements OnInit {
         appSettings.remove("plate_no");
         appSettings.remove("Branch");
         appSettings.remove("Odo");
-        this.userservice.GetUserDetail().then((result) => {
+        this.profileservice.GetUserDetail().then((result) => {
         });
         this.appcomponent.enableGesture();
         this.appcomponent.RefreshProfile();
@@ -83,7 +84,7 @@ export class HomeComponent implements OnInit {
         this.data = [];
         this.vehicleservice.GetVehicle().then((result: []) => {
             this.data = result;
-        }).then(()=>{
+        }).then(() => {
             this.branchserviec.FetchBranch();
         })
     }
