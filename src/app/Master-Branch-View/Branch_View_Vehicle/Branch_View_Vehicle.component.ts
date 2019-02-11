@@ -1,12 +1,13 @@
 import { Component, OnInit} from "@angular/core";
 import * as appSettings from "tns-core-modules/application-settings";
-import { UserService } from "../../shared/user.service";
 import * as app from "application";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { RouterExtensions } from "nativescript-angular/router";
 import {Color} from "color";
 import {isIOS} from "platform"
 import { isAndroid } from "tns-core-modules/ui/page/page";
+import { BranchService } from "../../shared/branch.service";
+
 @Component({
     selector: "BranchViewVehicle",
     moduleId: module.id,
@@ -15,7 +16,7 @@ import { isAndroid } from "tns-core-modules/ui/page/page";
 export class BranchViewVehicleComponent implements OnInit {
     Name : string ; 
     data;
-    constructor(private userservice : UserService , private routerextension : RouterExtensions) {
+    constructor( private routerextension : RouterExtensions, private branchservice : BranchService) {
         /* ***********************************************************
         * Use the constructor to inject app services that you need in this component.
         *************************************************************/
@@ -30,9 +31,10 @@ export class BranchViewVehicleComponent implements OnInit {
     }
     fetchQuery() {
         this.data = null;
-        this.userservice.BranchVehicle(appSettings.getString("Branch_ID")).then((result)=>{
-             this.data = result;
+        this.branchservice.BranchVehicle(appSettings.getString("Branch_ID")).then((result)=>{
+            this.data = result ;
         });
+        
     }
     /**
      * 
@@ -85,20 +87,16 @@ export class BranchViewVehicleComponent implements OnInit {
     onItemTap(args) {
         appSettings.setString("plate_no", this.data[args.index].vehicle_plate_no);
         appSettings.setBoolean("Branch" , true);
-        if (this.data[args.index].vehicle_key.length > 15) {
-            appSettings.setString("vehicle_key", this.data[args.index].vehicle_key.toString());
-        }
-        var params:JSON = this.data[args.index].Data_Fetch;
         this.routerextension.navigate(["/list"],{
             transition: {
                 name: "slideLeft",
                 duration: 50,
                 curve: "linear"
-            },
-           queryParams: {
-               params
             }
         });
     
+    }
+    onNavBack() {
+        this.routerextension.back();
     }
 }

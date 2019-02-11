@@ -14,6 +14,7 @@ import { Color } from "color";
 import { isIOS } from "platform"
 import { CardView } from 'nativescript-cardview';
 import { VehicleService } from "../shared/vehicle.service";
+import { BranchService } from "../shared/branch.service";
 registerElement('CardView', () => CardView);
 registerElement("Fab", () => require("nativescript-floatingactionbutton").Fab);
 
@@ -27,7 +28,7 @@ export class ListComponent implements OnInit {
     name = "";
     slide_out: boolean = true;  //to check the float action button whether slided out or not. 
     branch: boolean = false;  // to check whether is a branch view or not 
-    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private routerextension: RouterExtensions, private route: ActivatedRoute, private vehicleservice: VehicleService) { }
+    constructor(private branchservice : BranchService ,private vcRef: ViewContainerRef, private modal: ModalDialogService, private routerextension: RouterExtensions, private route: ActivatedRoute, private vehicleservice: VehicleService) { }
     /**
      * allow the user to navigate back 
      */
@@ -64,7 +65,12 @@ export class ListComponent implements OnInit {
      * fetch the reports list from background 
      */
     FetchReport() {
-        this.data = this.vehicleservice.GetReport();
+        if (this.branch) {
+            //fetch vehicle from branch data.  
+            this.data = this.branchservice.BranchVehicleDetail(this.name);
+        } else {
+            this.data = this.vehicleservice.GetReport();
+        }
     }
 
     /**
@@ -77,7 +83,7 @@ export class ListComponent implements OnInit {
             okButtonText: "Delete",
             cancelButtonText: "Cancel",
         }).then(result => {
-            if (result) {
+            if (result && !this.branch) {
                 this.data.splice(this.data.indexOf(data), 1);
                 this.vehicleservice.Remove_Report(data);
             }

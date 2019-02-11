@@ -1,22 +1,19 @@
 <ActionBar class="action-bar">
     <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
-    <ActionItem (tap)="add()" android.position="right" ios.position="right" android.systemIcon="ic_input_add"
-        ios.systemIcon="4"></ActionItem>
+    <ActionItem (tap)="add()" android.position="right" ios.position="right" android.systemIcon="ic_input_add" ios.systemIcon="4"></ActionItem>
     <Label class="action-bar-title" text="Master Branch Detail"></Label>
 </ActionBar>
 
 <GridLayout rows="auto, *, auto" tkExampleTitle tkToggleNavButton class="BranchView">
     <label *ngIf="!available" text="No item shown" class="no-item-text"></label>
-    <RadListView class="list-group" #myListView (itemSelected)="onItemTap($event)" (itemLoading)="onItemLoading($event)" [items]="data" row="1"
-        selectionBehavior="Press" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)"
-        swipeActions="true" (itemSwipeProgressStarted)="onSwipeCellStarted($event)" (itemSwipeProgressChanged)="onCellSwiping($event)">
-        <ListViewLinearLayout class="list-view" tkListViewLayout scrollDirection="Vertical" itemInsertAnimation="Default"
-            itemDeleteAnimation="Default"></ListViewLinearLayout>
+    <RadListView class="list-group" #myListView (itemSelected)="onItemTap($event)" (itemLoading)="onItemLoading($event)" [items]="data" row="1" selectionBehavior="Press" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" swipeActions="true"
+        (itemSwipeProgressStarted)="onSwipeCellStarted($event)" (itemSwipeProgressChanged)="onCellSwiping($event)">
+        <ListViewLinearLayout class="list-view" tkListViewLayout scrollDirection="Vertical" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
         <ng-template tkTemplateKey="details" kListItemTemplate let-item="item" background-color="transparent">
             <GridLayout class="list-group-item" rows="*" columns="auto, *">
-                <WebImage row="0" col="0" [src]="item.photo" class="thumb img-circle" rounded="true"></WebImage>
-                <Label row="0" col="1" [text]="item.name"></Label>
+                <WebImage row="0" col="0" [src]="item.profile_picture" class="thumb img-circle" rounded="true"></WebImage>
+                <Label row="0" col="1" [text]="item.user_name"></Label>
             </GridLayout>
         </ng-template>
         <GridLayout *tkListItemSwipeTemplate id="delete-view" class="delete">

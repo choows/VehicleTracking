@@ -12,6 +12,7 @@ import * as dialogs from "tns-core-modules/ui/dialogs";
 import { Color } from "color";
 import { isIOS } from "platform"
 import { VehicleService } from "../shared/vehicle.service";
+import { BranchService } from "../shared/branch.service";
 @Component({
     selector: "Home",
     moduleId: module.id,
@@ -22,7 +23,7 @@ export class HomeComponent implements OnInit {
     isBusy: boolean = false;
     allowed = true;
     data = [];
-    constructor(private appcomponent: AppComponent, private routerextension: RouterExtensions, private userservice: UserService, private vehicleservice: VehicleService) { }
+    constructor(private branchserviec : BranchService,private appcomponent: AppComponent, private routerextension: RouterExtensions, private userservice: UserService, private vehicleservice: VehicleService) { }
     /**
      * adding new vehicle function. 
      * redirect to the new_vehicle component.
@@ -82,6 +83,8 @@ export class HomeComponent implements OnInit {
         this.data = [];
         this.vehicleservice.GetVehicle().then((result: []) => {
             this.data = result;
+        }).then(()=>{
+            this.branchserviec.FetchBranch();
         })
     }
 

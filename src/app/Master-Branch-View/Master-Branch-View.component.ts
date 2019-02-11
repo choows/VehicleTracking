@@ -8,12 +8,12 @@ import { UserService } from "../shared/user.service";
 import * as app from "application";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { RouterExtensions } from "nativescript-angular/router";
-import {Color} from "color";
+import { Color } from "color";
 import { screen } from "tns-core-modules/platform/platform";
-import {isIOS} from "platform"
+import { isIOS } from "platform"
 import { ListViewEventData } from "nativescript-ui-listview";
 import { isAndroid } from "tns-core-modules/ui/page/page";
-
+import { BranchService } from "../shared/branch.service";
 @Component({
     selector: "MasterBranchView",
     moduleId: module.id,
@@ -21,12 +21,11 @@ import { isAndroid } from "tns-core-modules/ui/page/page";
 })
 export class MasterBranchViewComponent implements OnInit {
     image_src;
-    data  = [] ; 
-    allowed = true ;
-    constructor(private routerextension : RouterExtensions, private vcRef: ViewContainerRef, private modal: ModalDialogService , private userservice : UserService) {}
+    data = [];
+    allowed = true;
+    constructor(private routerextension: RouterExtensions,private branchservice : BranchService, private vcRef: ViewContainerRef, private modal: ModalDialogService, private userservice: UserService) { }
     available = false;
     ngOnInit() {
-        appSettings.remove("vehicle_key");
         appSettings.remove("plate_no");
         this.fetchQuery();
     }
@@ -36,7 +35,7 @@ export class MasterBranchViewComponent implements OnInit {
      */
     fetchQuery() {
         this.data = null;
-        this.data = this.userservice.BranchUserName();
+        this.data = this.branchservice.BranchesList();
         this.check();
     }
 
@@ -44,10 +43,10 @@ export class MasterBranchViewComponent implements OnInit {
      * 
      * check whether data appear or not 
      */
-    check(){
-        if(this.data.length > 0){
+    check() {
+        if (this.data.length > 0) {
             this.available = true;
-        }else{
+        } else {
             this.available = false;
         }
     }
@@ -57,13 +56,13 @@ export class MasterBranchViewComponent implements OnInit {
      * 
      * used to chaned the background color of list view in iOS.
      */
-    onItemLoading(args){
-        if(isIOS){
+    onItemLoading(args) {
+        if (isIOS) {
             var newcolor = new Color(0, 0, 0, 0);
             args.ios.backgroundView.backgroundColor = newcolor.ios;
-            args.object.ios.pullToRefreshView.backgroundColor = newcolor.ios; 
+            args.object.ios.pullToRefreshView.backgroundColor = newcolor.ios;
         }
- 
+
     }
 
     /**
@@ -75,12 +74,12 @@ export class MasterBranchViewComponent implements OnInit {
     onPullToRefreshInitiated(args) {
         this.fetchQuery();
         let listview = args.object;
-        if(isAndroid){
+        if (isAndroid) {
             listview.notifyPullToRefreshFinished();
-        }else{
-            setTimeout(()=>{
+        } else {
+            setTimeout(() => {
                 listview.notifyPullToRefreshFinished();
-            } , 1000);
+            }, 1000);
         }
     }
 
@@ -152,7 +151,7 @@ export class MasterBranchViewComponent implements OnInit {
             animate: true
         };
         this.modal.showModal(ViewQrCodeComponent, options).then(res => {
-            this.userservice.Refresh();
+            //this.userservice.Refresh();
         });
     }
 
@@ -178,36 +177,36 @@ export class MasterBranchViewComponent implements OnInit {
      * 
      * allow viewing the data 
      */
-    
+
     onItemTap(args) {
         //appSettings.setString("plate_no", this.data[args.index].vehicle_plate_no);
-       // appSettings.setBoolean("Branch" , true);
-      //  if (this.data[args.index].vehicle_key.length > 15) {
-       //     appSettings.setString("vehicle_key", this.data[args.index].vehicle_key.toString());
-      //  }
-     //   var params:JSON = this.data[args.index].Data_Fetch;
-     //   this.routerextension.navigate(["/list"],{
-      //      transition: {
-      //          name: "slideLeft",
-      //          duration: 50,
-      //          curve: "linear"
-       //     },
-     //       queryParams: {
-     //          params
-      //      }
-     //   });
-     if(appSettings.hasKey("Branch_Name")){
-         appSettings.remove("Branch_Name");
-     }
-     appSettings.setString("Branch_Name" , this.data[args.index].name) ; 
-     appSettings.setString("Branch_ID" , this.data[args.index].id);
-     this.routerextension.navigate(["/View-Vehicle"] , {
-         transition : {
-             name : "slideLeft",
-             duration : 50 , 
-             curve : "linear"
-         }
-     });
+        // appSettings.setBoolean("Branch" , true);
+        //  if (this.data[args.index].vehicle_key.length > 15) {
+        //     appSettings.setString("vehicle_key", this.data[args.index].vehicle_key.toString());
+        //  }
+        //   var params:JSON = this.data[args.index].Data_Fetch;
+        //   this.routerextension.navigate(["/list"],{
+        //      transition: {
+        //          name: "slideLeft",
+        //          duration: 50,
+        //          curve: "linear"
+        //     },
+        //       queryParams: {
+        //          params
+        //      }
+        //   });
+        if (appSettings.hasKey("Branch_Name")) {
+            appSettings.remove("Branch_Name");
+        }
+        appSettings.setString("Branch_Name", this.data[args.index].user_name);
+        appSettings.setString("Branch_ID", this.data[args.index].id);
+        this.routerextension.navigate(["/View-Vehicle"], {
+            transition: {
+                name: "slideLeft",
+                duration: 50,
+                curve: "linear"
+            }
+        });
     }
 
     /**
@@ -222,22 +221,22 @@ export class MasterBranchViewComponent implements OnInit {
     }
     onCellSwiping(args) {
         let width = screen.mainScreen.widthPixels;
-        if( args.data.x == -width && this.allowed){
+        if (args.data.x == -width && this.allowed) {
             dialogs.confirm({
-                title : "Confirm to remove " + this.data[args.index].name + " ? ",
-                message : "This action could not be revert. ",
-                okButtonText : "Delete",
-                cancelButtonText : "Cancel",
-            }).then((result)=>{
-                if(result){
-                    this.userservice.removeBranch(this.data[args.index].id , this.data[args.index].name);
+                title: "Confirm to remove " + this.data[args.index].name + " ? ",
+                message: "This action could not be revert. ",
+                okButtonText: "Delete",
+                cancelButtonText: "Cancel",
+            }).then((result) => {
+                if (result) {
+                    this.branchservice.removeBranch(this.data[args.index].id, this.data[args.index].name);
                     this.data.splice(this.data.indexOf(args), 1);
-                }else{
+                } else {
                     //restore the listview..
                     let listview = args.object;
                     listview.notifySwipeToExecuteFinished();
                 }
-            }).catch((err)=>{
+            }).catch((err) => {
                 console.log(err);
             });
             this.allowed = false;
