@@ -58,7 +58,7 @@ export class BranchService {
      * get the username of all the branch id and store in the variable "Branches"
      */
     private FetchBranchProfile(user_id_array: any[]) {
-        this.Branches = [] ; 
+        this.Branches = [];
         for (var id in user_id_array) {
             let user_id = user_id_array[id];
             let path = "Users/" + user_id + "/User_Profile";
@@ -87,11 +87,11 @@ export class BranchService {
     /**
      * return the branches list 
      */
-    BranchesList(){
+    BranchesList() {
         return this.Branches;
     }
 
-    BranchVehicles ; //to temporary store the branch vehicle detail ... for easily search for vehicle detail and no need to fetch from firebase again\. 
+    BranchVehicles; //to temporary store the branch vehicle detail ... for easily search for vehicle detail and no need to fetch from firebase again\. 
 
     /**
      * 
@@ -104,7 +104,7 @@ export class BranchService {
         return new Promise((resolve, reject) => {
             firebase.getValue("Users/" + user_id + "/Vehicles").then((result) => {
                 let res = result.value;
-                this.BranchVehicles = result.value ; 
+                this.BranchVehicles = result.value;
                 for (var vehicle in res) {
                     if (typeof res[vehicle]["plate_no"] !== "undefined") {
                         list.push({
@@ -124,31 +124,33 @@ export class BranchService {
     /**
      * Fetch branch vehicle detail 
      */
-    BranchVehicleDetail(plate_num : string) : any[]{
+    BranchVehicleDetail(plate_num: string): any[] {
         let Vehicle_Report = this.BranchVehicles[plate_num]["Reports"];
         let report_list = [];
         for (var report_type in Vehicle_Report) {
             for (var reports in Vehicle_Report[report_type]) {
                 let report_detail = Vehicle_Report[report_type][reports];
-                report_list.push({
-                    id: reports,
-                    report_type: report_detail["Report_type"],
-                    Date: report_detail["Date"],
-                    Time: report_detail["Time"],
-                    Fuel_Type: report_detail["Fuel_type"],
-                    Fuel_Price: report_detail["Fuel_price"],
-                    Amount_Paid: report_detail["Amount"],
-                    Total_Volume: report_detail["Fuel_Volume"],
-                    Location: report_detail["Location"],
-                    Odometer: report_detail["Odometer"],
-                    Note: report_detail["Note"],
-                    Photo: report_detail["Image"],
-                    Parts: report_detail["Parts"],
-                    Expenses_type: report_detail["Expenses_type"],
-                    Insurance_Company: report_detail["Company"],
-                    Insurance_type: report_detail["Type"],
-                    Image_path: report_detail["Image_path"]
-                });
+                if (typeof report_detail["Report_type"] != "undefined") {
+                    report_list.push({
+                        id: reports,
+                        report_type: report_detail["Report_type"],
+                        Date: report_detail["Date"],
+                        Time: report_detail["Time"],
+                        Fuel_Type: report_detail["Fuel_type"],
+                        Fuel_Price: report_detail["Fuel_price"],
+                        Amount_Paid: report_detail["Amount"],
+                        Total_Volume: report_detail["Fuel_Volume"],
+                        Location: report_detail["Location"],
+                        Odometer: report_detail["Odometer"],
+                        Note: report_detail["Note"],
+                        Photo: report_detail["Image"],
+                        Parts: report_detail["Parts"],
+                        Expenses_type: report_detail["Expenses_type"],
+                        Insurance_Company: report_detail["Company"],
+                        Insurance_type: report_detail["Type"],
+                        Image_path: report_detail["Image_path"]
+                    });
+                }
             }
         }
         return report_list;
