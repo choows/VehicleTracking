@@ -128,28 +128,30 @@ export class BranchService {
         let Vehicle_Report = this.BranchVehicles[plate_num]["Reports"];
         let report_list = [];
         for (var report_type in Vehicle_Report) {
-            for (var reports in Vehicle_Report[report_type]) {
-                let report_detail = Vehicle_Report[report_type][reports];
-                if (typeof report_detail["Report_type"] != "undefined") {
-                    report_list.push({
-                        id: reports,
-                        report_type: report_detail["Report_type"],
-                        Date: report_detail["Date"],
-                        Time: report_detail["Time"],
-                        Fuel_Type: report_detail["Fuel_type"],
-                        Fuel_Price: report_detail["Fuel_price"],
-                        Amount_Paid: report_detail["Amount"],
-                        Total_Volume: report_detail["Fuel_Volume"],
-                        Location: report_detail["Location"],
-                        Odometer: report_detail["Odometer"],
-                        Note: report_detail["Note"],
-                        Photo: report_detail["Image"],
-                        Parts: report_detail["Parts"],
-                        Expenses_type: report_detail["Expenses_type"],
-                        Insurance_Company: report_detail["Company"],
-                        Insurance_type: report_detail["Type"],
-                        Image_path: report_detail["Image_path"]
-                    });
+            if (report_type != "Total") {
+                for (var reports in Vehicle_Report[report_type]) {
+                    let report_detail = Vehicle_Report[report_type][reports];
+                    if (typeof report_detail["Report_type"] !== "undefined") {
+                        report_list.push({
+                            id: reports,
+                            report_type: report_detail["Report_type"],
+                            Date: report_detail["Date"],
+                            Time: report_detail["Time"],
+                            Fuel_Type: report_detail["Fuel_type"],
+                            Fuel_Price: report_detail["Fuel_price"],
+                            Amount_Paid: report_detail["Amount"],
+                            Total_Volume: report_detail["Fuel_Volume"],
+                            Location: report_detail["Location"],
+                            Odometer: report_detail["Odometer"],
+                            Note: report_detail["Note"],
+                            Photo: report_detail["Image"],
+                            Parts: report_detail["Parts"],
+                            Expenses_type: report_detail["Expenses_type"],
+                            Insurance_Company: report_detail["Company"],
+                            Insurance_type: report_detail["Type"],
+                            Image_path: report_detail["Image_path"]
+                        });
+                    }
                 }
             }
         }
