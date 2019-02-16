@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { UserService } from "../shared/user.service";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import * as app from "application";
+import { SummaryService } from "../shared/summary.service";
 /* ***********************************************************
 * Before you can navigate to this page from your app, you need to reference this page's module in the
 * global app router module. Add the following object to the global array of routes:
@@ -15,15 +16,28 @@ import * as app from "application";
     templateUrl: "./Statistics.component.html"
 })
 export class StatisticsComponent implements OnInit {
-    constructor(private userservice: UserService) {
+    constructor(private userservice: UserService, private summaryservice: SummaryService) {
     }
     List = [];
     chart_type;
-    max ; 
+    max;
     min;
     GraphList = [];
     onbusy;
+    Fuel_Price = [] ; 
     ngOnInit(): void {
+        this.onbusy = true;
+        this.summaryservice.getvehicleJSON().then(()=>{
+            this.List = this.summaryservice.return_cost_per_vehicle();
+        }).then(()=>{
+            this.GraphList = this.summaryservice.return_cost_per_day();
+        }).then(()=>{
+            this.Fuel_Price = this.summaryservice.return_Fuel_price_list();
+        }).then(()=>{
+            this.onbusy = false;
+        });
+       
+        /*//
         this.onbusy = true;
         this.List = this.userservice.fetchStatistics();
         this.userservice.fetchGraphStatistics().then((result) => {
@@ -34,6 +48,7 @@ export class StatisticsComponent implements OnInit {
         }).catch((err) => {
             console.log(err);
         });
+        */
     }
     onDrawerButtonTap(): void {
         const sideDrawer = <RadSideDrawer>app.getRootView();
@@ -47,6 +62,10 @@ export class StatisticsComponent implements OnInit {
             }
             case 1: {
                 this.chart_type = "Cost per day";
+                break;
+            }
+            case 2 : {
+                this.chart_type = "Fuel Price";
                 break;
             }
             default: break;
@@ -80,25 +99,25 @@ export class StatisticsComponent implements OnInit {
                 } else {
                     arr.push({ "Date": this.GraphList[i].Date, "Amount": this.GraphList[i].Amount });
                 }
-            }else{
+            } else {
                 //for the last unit in the array.
                 arr.push({ "Date": this.GraphList[i].Date, "Amount": this.GraphList[i].Amount });
             }
         }
         this.GraphList = arr;
 
-        for(var item in this.GraphList){
+        for (var item in this.GraphList) {
             let date = new Date(this.GraphList[item].Date);
             let convertin = date.getDate() + "/" + date.getUTCMonth(); + date.getFullYear();
             this.GraphList[item].Date = convertin;
-           // this.GraphList[item].Date = date.getMilliseconds();
+            // this.GraphList[item].Date = date.getMilliseconds();
         }
 
 
         let current = new Date(Date.now());
-        this.min = "1/"+ current.getMonth().toString() + "/" + current.getFullYear().toString();
-        let days = new Date(current.getFullYear() , current.getMonth() +1 , 0).getDate() ; 
-        this.max = days.toString() + "/" + current.getMonth().toString() +"/" + current.getFullYear().toString();
-        
+        this.min = "1/" + current.getMonth().toString() + "/" + current.getFullYear().toString();
+        let days = new Date(current.getFullYear(), current.getMonth() + 1, 0).getDate();
+        this.max = days.toString() + "/" + current.getMonth().toString() + "/" + current.getFullYear().toString();
+
     }
 }
