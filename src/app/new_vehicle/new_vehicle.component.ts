@@ -9,6 +9,7 @@ import * as appSettings from "tns-core-modules/application-settings";
 import { ImageSource } from "tns-core-modules/image-source/image-source";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
 import { VehicleService } from "../shared/vehicle.service";
+import { Vehicle } from "../dataform-service/vehicle";
 @Component({
     selector: "NewVehicle",
     moduleId: module.id,
@@ -16,6 +17,7 @@ import { VehicleService } from "../shared/vehicle.service";
 })
 export class NewVehicleComponent implements OnInit {
 
+    private _vehicle: Vehicle;
     /** 
     *  variable declare as below 
     **/
@@ -33,11 +35,16 @@ export class NewVehicleComponent implements OnInit {
     /**
      * function declare as below. 
      */
-    constructor(private routerextension: RouterExtensions, private vehicleservice : VehicleService) { }
+    constructor(private routerextension: RouterExtensions, private vehicleservice: VehicleService) { }
     onNavBack() {
         this.routerextension.back();
     }
-    ngOnInit() { }
+    get vehicle(): Vehicle {
+        return this._vehicle;
+    }
+    ngOnInit() {
+        this._vehicle = new Vehicle(0, "KJC 1234", 0, 60, 0, 123456);
+    }
     /**
      * take photo function.
      */
@@ -93,6 +100,7 @@ export class NewVehicleComponent implements OnInit {
      * save button function. 
      */
     saved() {
+        /*
         let checker: boolean = true;
         let error: string = "";
         if (this.plate_number == null) {
@@ -119,25 +127,27 @@ export class NewVehicleComponent implements OnInit {
         } else {
             alert(error);
         }
-
+*/
+        this.savecontent();
     }
     savecontent() {
         this.onbusy = true;
-       // let path: string = "Users/" + appSettings.getString("user_id") + "/Vehicles";
+        // let path: string = "Users/" + appSettings.getString("user_id") + "/Vehicles";
+        
         let a = {
             "Image": this.image,
-            "type": this.picked_vehicle,
-            "plate_no": this.plate_number.toLocaleUpperCase(),
-            "manufacturer": this.picked_manufacturer,
-            "tank_capacity": this.tank_cap.toString(),
-            "fuel_type": this.picked_fuel_type,
-            "odometer": parseInt(this.Odometer.toString()),
+            "type": this.vehicle_list[this.vehicle.vehicle_type],
+            "plate_no": this.vehicle.plate_number.toLocaleUpperCase(),
+            "manufacturer": this.manufacturer[this.vehicle.manufacturer],
+            "tank_capacity": this.vehicle.tank_capacity,
+            "fuel_type": this.fuel_type[this.vehicle.fuel_type],
+            "odometer": this.vehicle.odometer,
             "Image_path": "-",
-            "current_Odo": parseInt(this.Odometer.toString()),
+            "current_Odo": this.vehicle.odometer,
         };
-        this.vehicleservice.NewVehicle(a).then(()=>{
+        this.vehicleservice.NewVehicle(a).then(() => {
             this.onbusy = false;
-        }).then(()=>{
+        }).then(() => {
             this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {
             console.log(error);

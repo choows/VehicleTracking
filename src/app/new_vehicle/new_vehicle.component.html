@@ -1,8 +1,12 @@
 <ActionBar title="New Vehicle" class="action-bar">
-	<NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBack()"></NavigationButton>
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBack()"></NavigationButton>
 </ActionBar>
 <GridLayout class="Form">
-	<ScrollView>
+    <ScrollView>
+        <StackLayout>
+            <Button class="side-button" (tap)="onTakePicture()" text="Photo" [backgroundImage]="image"></Button>
+
+            <!--
     <StackLayout>
         <FlexboxLayout class="Form_container"flexDirection="row">
         <Button class="side-button" (tap)="onTakePicture()" text="Photo" [backgroundImage]="image" ></Button>
@@ -35,6 +39,27 @@
         <Button class="submit_button" (tap)="saved()" text="SAVE"></Button>
     </FlexboxLayout>
     </StackLayout>
-		</ScrollView>
-<ActivityIndicator row="1" #activityIndicator [busy]="onbusy" width="100" height="100" class="activity-indicator"></ActivityIndicator>
+-->
+            <RadDataForm tkExampleTitle tkToggleNavButton [source]="vehicle">
+                <TKEntityProperty tkDataFormProperty name="manufacturer" displayName="Manufacturer" index="0" [valuesProvider]="manufacturer">
+                    <TKPropertyEditor tkEntityPropertyEditor type="Picker"></TKPropertyEditor>
+                </TKEntityProperty>
+                <TKEntityProperty tkDataFormProperty name="vehicle_type" displayName="Vehicle Type" index="0" [valuesProvider]="vehicle_list">
+                    <TKPropertyEditor tkEntityPropertyEditor type="SegmentedEditor"></TKPropertyEditor>
+                </TKEntityProperty>
+                <TKEntityProperty tkDataFormProperty name="fuel_type" displayName="Fuel Type" index="0" [valuesProvider]="fuel_type">
+                    <TKPropertyEditor tkEntityPropertyEditor type="SegmentedEditor"></TKPropertyEditor>
+                </TKEntityProperty>
+                <TKEntityProperty tkDataFormProperty name="tank_capacity" displayName="Tank Capacity" index="40">
+                    <!-- >> angular-dataform-editor-params-xml -->
+                    <TKPropertyEditor tkEntityPropertyEditor type="Stepper">
+                        <TKPropertyEditorParams tKEditorParams minimum="40" maximum="100" step="10"></TKPropertyEditorParams>
+                    </TKPropertyEditor>
+                    <!-- << angular-dataform-editor-params-xml -->
+                </TKEntityProperty>
+            </RadDataForm>
+            <Button class="submit_button" (tap)="saved()" text="SAVE"></Button>
+        </StackLayout>
+    </ScrollView>
+    <ActivityIndicator row="1" #activityIndicator [busy]="onbusy" width="100" height="100" class="activity-indicator"></ActivityIndicator>
 </GridLayout>

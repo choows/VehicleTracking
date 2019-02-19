@@ -5,6 +5,13 @@
     font-family: "FontAwesome";
 }
 
+.submit_button {
+    background-color: transparentize($color: blue, $amount: 0.3);
+    height: 40%;
+    width: 100%;
+    font-weight: 600;
+}
+
 // Common page class
 .page-content {
     .page-placeholder {
