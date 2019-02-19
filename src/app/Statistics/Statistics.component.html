@@ -3,7 +3,7 @@
     <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left"></ActionItem>
 </ActionBar>
-<TabView id="tabViewContainer" androidTabsPosition="bottom" (selectedIndexChanged)="IndexChanged($event)" class="Statistics">
+<TabView id="tabViewContainer" (selectedIndexChanged)="IndexChanged($event)" class="Statistics">
     <ActivityIndicator row="1" #activityIndicator [busy]="onbusy" width="100" height="100" class="activity-indicator"></ActivityIndicator>
     <StackLayout *tabItem="{title: 'Bar Chart'}">
         <label class="Header" [text]="chart_type"></label>
@@ -27,11 +27,14 @@
     </StackLayout>
     <StackLayout *tabItem="{title: 'Fuel Price'}">
         <label class="Header" [text]="chart_type"></label>
-        <RadCartesianChart tkExampleTitle tkToggleNavButton height="100%">
+        <RadCartesianChart tkExampleTitle tkToggleNavButton height="100%" seriesSelectionMode="Single">
             <CategoricalAxis tkCartesianHorizontalAxis allowPan="true" allowZoom="true"></CategoricalAxis>
             <!-- <DateTimeCategoricalAxis  tkCartesianHorizontalAxis dateFormat="dd/MM"></DateTimeCategoricalAxis>-->
             <LinearAxis allowPan="true" allowZoom="true" tkCartesianVerticalAxis></LinearAxis>
-            <LineSeries tkCartesianSeries [items]="Fuel_Price" categoryProperty="Date" valueProperty="Ron95"></LineSeries>
+            <LineSeries tkCartesianSeries legendTitle="Ron 95" legendLabel="Fuel type" [items]="Fuel_Price" categoryProperty="Date" valueProperty="Ron95"></LineSeries>
+            <LineSeries tkCartesianSeries legendTitle="Ron 97" legendLabel="Fuel type" [items]="Fuel_Price" categoryProperty="Date" valueProperty="Ron97"></LineSeries>
+            <LineSeries tkCartesianSeries legendTitle="Diesel" legendLabel="Fuel type" [items]="Fuel_Price" categoryProperty="Date" valueProperty="Diesel"></LineSeries>
+            <RadLegendView tkCartesianLegend position="Top" title="Fuel type" height="150" enableSelection="true"></RadLegendView>
         </RadCartesianChart>
     </StackLayout>
 </TabView>
