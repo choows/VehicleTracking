@@ -64,7 +64,8 @@ export class ServiceReport{
     public note : string ;
     public next_odometer : number ;
     public next_date : string ;
-    constructor(amount : number ,date : string , time : string , odometer : number , note : string , nxt_odo : number , nxt_date : string){
+    public parts: Array<String>;
+    constructor(amount : number ,date : string , time : string , odometer : number , note : string , nxt_odo : number , nxt_date : string , parts : Array<String>){
         this.Amount = amount;
         this.date = date;
         this.next_date = nxt_date;
@@ -72,6 +73,7 @@ export class ServiceReport{
         this.note = note;
         this.odometer = odometer;
         this.time = time;
+        this.parts = parts ;
     }
 }
 export class ReminderReport{

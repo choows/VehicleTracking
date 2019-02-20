@@ -74,6 +74,9 @@
                     <TKEntityProperty tkPropertyGroupProperties name="Amount">
                         <TKPropertyEditor tkEntityPropertyEditor type="Decimal"></TKPropertyEditor>
                     </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="parts" displayName="Service Parts" index="3" autoCompleteDisplayMode="tokens" [valuesProvider]="parts">
+                        <TKPropertyEditor tkEntityPropertyEditor type="AutoCompleteInline"></TKPropertyEditor>
+                    </TKEntityProperty>
                 </TKPropertyGroup>
                 <TKPropertyGroup tkDataFormGroups collapsible="true" name="Others">
                     <TKEntityProperty tkPropertyGroupProperties name="odometer"></TKEntityProperty>
@@ -86,40 +89,7 @@
                     <TKEntityProperty tkPropertyGroupProperties name="next_odometer" displayName="Next Service Odometer"></TKEntityProperty>
                 </TKPropertyGroup>
             </RadDataForm>
-            <FlexboxLayout class="Form_container" flexDirection="column">
-                <label text="Service Parts" class="Main_Label"></label>
 
-                <FlexboxLayout flexDirection="column" class="parts-box">
-                    <FlexboxLayout flexDirection="row" class="parts-box">
-                        <CheckBox text="Engine oil" checked="false" (tap)="checker($event)"></CheckBox>
-                        <CheckBox text="Breakfluid" checked="false" (tap)="checker($event)"></CheckBox>
-                    </FlexboxLayout>
-
-                    <FlexboxLayout flexDirection="row" class="parts-box">
-                        <CheckBox text="Oil Filter" checked="false" (tap)="checker($event)"></CheckBox>
-                        <CheckBox text="Air Filter" checked="false" (tap)="checker($event)"></CheckBox>
-                    </FlexboxLayout>
-
-                    <FlexboxLayout flexDirection="row" class="parts-box">
-                        <CheckBox text="Sterring Fluid" checked="false" (tap)="checker($event)"></CheckBox>
-                        <CheckBox text="Fuel Filter" checked="false" (tap)="checker($event)"></CheckBox>
-                    </FlexboxLayout>
-
-                    <FlexboxLayout flexDirection="row" class="parts-box">
-                        <CheckBox text="Tires" checked="false" (tap)="checker($event)"></CheckBox>
-                        <CheckBox text="Operation Light" checked="false" (tap)="checker($event)"></CheckBox>
-                    </FlexboxLayout>
-
-                    <FlexboxLayout flexDirection="row" class="parts-box">
-                        <CheckBox text="Engine Tunning" checked="false" (tap)="checker($event)"></CheckBox>
-                        <CheckBox text="Others" checked="false" (tap)="checker($event)"></CheckBox>
-                    </FlexboxLayout>
-
-                    <FlexboxLayout flexDirection="row" class="parts-box">
-                        <CheckBox text="Transmission Fluid" checked="false" (tap)="checker($event)"></CheckBox>
-                    </FlexboxLayout>
-                </FlexboxLayout>
-            </FlexboxLayout>
             <Button text="Set Current location" (tap)="enableLocationServices()" *ngIf="!currentGeoLocation"></Button>
             <Button text="Photo" (tap)="Photo()" class="photo_button"></Button>
             <Button class="submit_button" (tap)="validation()" text="SAVE"></Button>

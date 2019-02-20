@@ -43,7 +43,8 @@ export class ReportsServiceComponent implements OnInit {
     onbusy: boolean = false;
     NextService_Odometer : number ;
     DateStr : string ;
-    TimeStr : string 
+    TimeStr : string ;
+    parts = [ "Engine oil" , "Engine Tunning","Break Fuild" , "Sterring Fluid" , "Oil Filter" , "Air Filter" , "Fuel Filter" , "Tires" , "Operation Light"];
     //checkbox purpose
     checker(args) {
         if (!args.object.checked) {
@@ -62,9 +63,8 @@ export class ReportsServiceComponent implements OnInit {
         const currentdate = new Date(Date.now());
         const date = currentdate.getFullYear().toString() + "-" + (currentdate.getMonth() +1).toString()+"-" + currentdate.getDate().toString();
         const nxt_date = currentdate.getFullYear().toString() + "-" + (currentdate.getMonth() +7).toString()+"-" + currentdate.getDate().toString();
-
         const time = currentdate.getHours().toString() + ":" + currentdate.getMinutes().toString();
-        this._service_Report = new ServiceReport(0 , date , time , appSettings.getNumber("Odo") , "" , appSettings.getNumber("Odo") + 5000 ,nxt_date );
+        this._service_Report = new ServiceReport(0 , date , time , appSettings.getNumber("Odo") , "" , appSettings.getNumber("Odo") + 5000 ,nxt_date, ["Engine oil"] );
     }
     constructor(private vcRef: ViewContainerRef,private vehicleservice: VehicleService, private modal: ModalDialogService,private routerextension: RouterExtensions, private userservice: UserService) { }
     onNavBack() {
@@ -208,7 +208,6 @@ export class ReportsServiceComponent implements OnInit {
     //submit button
     submit() {
         this.onbusy = true;
-        let current_date: string = this.date.toDateString();
         const newdate = new Date(this._service_Report.date);
         const servicedate = new Date(this._service_Report.next_date);
         let data = {
@@ -223,7 +222,7 @@ export class ReportsServiceComponent implements OnInit {
             "Note": this._service_Report.note,
             "Image": this.image,
             "Amount": this._service_Report.Amount,
-            "Parts": this.data.toString(),
+            "Parts": this._service_Report.parts.toString(),
             "Image_path" : "-"
         };
         const nxt= {
@@ -239,34 +238,6 @@ export class ReportsServiceComponent implements OnInit {
             this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {
             console.log(error);
-        });
-    }
-    showDate() {
-        let options = {
-            context: {
-                isDate: true,
-                isTime: false,
-            },
-            fullscreen: false,
-            viewContainerRef: this.vcRef,
-            //animate : true
-        };
-        this.modal.showModal(DateTimePickerModelComponent, options).then(res => {
-            this.DateStr = res;
-        });
-    }
-    showTime() {
-        let options = {
-            context: {
-                isDate: false,
-                isTime: true,
-            },
-            fullscreen: false,
-            viewContainerRef: this.vcRef,
-            //animate : true
-        };
-        this.modal.showModal(DateTimePickerModelComponent, options).then(res => {
-            this.TimeStr = res;
         });
     }
 }

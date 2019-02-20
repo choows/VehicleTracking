@@ -93,8 +93,12 @@
                     <TKEntityProperty tkPropertyGroupProperties name="fuel_type" displayName="Fuel Type" [valuesProvider]="fueltype">
                         <TKPropertyEditor tkEntityPropertyEditor type="SegmentedEditor"></TKPropertyEditor>
                     </TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Fuel_price" readOnly="true"></TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Fuel_Volume" readOnly="true"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Fuel_price">
+                        <TKPropertyEditor tkEntityPropertyEditor type="Label"></TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Fuel_Volume">
+                        <TKPropertyEditor tkEntityPropertyEditor type="Label"></TKPropertyEditor>
+                    </TKEntityProperty>
                     <TKEntityProperty tkPropertyGroupProperties name="Amount">
                         <TKPropertyEditor tkEntityPropertyEditor type="Decimal"></TKPropertyEditor>
                     </TKEntityProperty>
