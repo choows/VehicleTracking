@@ -21,16 +21,10 @@ export class NewVehicleComponent implements OnInit {
     /** 
     *  variable declare as below 
     **/
-    plate_number: string;
     manufacturer = ["British Leyland", "BMW", "Chevrolet", "Chrysler-Rootes", "Datsun", "Ford", "Fiat", "Holden", "Mercedes-Benz", "Mitsubishi", "Mazda", "Opel", "Peugeot", "Renault", "Volvo", "Honda", "Toyota", "Volkswagen", "Vauxhall"];
     vehicle_list = ["car", "motor", "truck"];
-    tank_cap: number;
     fuel_type = ["Ron 95", "Ron 97", "Diesel"];
-    Odometer: number;
     image: string;
-    picked_fuel_type: string;
-    picked_manufacturer: string;
-    picked_vehicle: string;
     onbusy: boolean = false;
     /**
      * function declare as below. 
@@ -80,21 +74,6 @@ export class NewVehicleComponent implements OnInit {
             }).catch((err) => {
                 console.log("Error -> " + err.message);
             });
-    }
-    /**
-     * listpicker function. 
-     */
-    public selectedVehicle(args) {
-        let picker = <ListPicker>args.object;
-        this.picked_vehicle = this.vehicle_list[picker.selectedIndex];
-    }
-    public selectedManu(args) {
-        let picker = <ListPicker>args.object;
-        this.picked_manufacturer = this.manufacturer[picker.selectedIndex];
-    }
-    public selected_fuel_type(args) {
-        let picker = <ListPicker>args.object;
-        this.picked_fuel_type = this.fuel_type[picker.selectedIndex];
     }
     /**
      * save button function. 

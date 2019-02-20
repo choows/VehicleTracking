@@ -1,5 +1,5 @@
 <ActionBar title="Refuel" class="action-bar">
-	<NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBack()"></NavigationButton>
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBack()"></NavigationButton>
 </ActionBar>
 <!--
 
@@ -9,8 +9,9 @@
 	Better to use raddataform to do the form instead of setting like this. 
 -->
 <GridLayout class="Form">
-	<ScrollView *ngIf="!currentGeoLocation">
-		<StackLayout>
+    <ScrollView *ngIf="!currentGeoLocation">
+        <StackLayout>
+            <!--
 		<FlexboxLayout class="Form_container" flexDirection="column">
 			<Label text="Date" class="Main_Label"></Label>
 			<Button text="Date" (tap)="showDate()"></Button>
@@ -78,12 +79,39 @@
 		<FlexboxLayout class="Form_container" >
 			<Button class="submit_button" (tap)="validation()" text="SAVE"></Button>
 		</FlexboxLayout>
-	</StackLayout>
-	</ScrollView>
-	<FlexboxLayout flexDirection="column" *ngIf="currentGeoLocation" class="MapView">
-		<MapView class="Map" (cameraChanged)="onCameraChanged($event)" (coordinateTapped)="onCoordinateTapped($event)"
-		 (mapReady)="onMapReady($event)" [zoom]="zoom" [latitude]="latitude" [longitude]="longitude" mapAnimationsEnabled="true"></MapView>
-		<Button class="coordinate_submit_button" text="Done" (tap)="disableMap()"></Button>
-	</FlexboxLayout>
-	<ActivityIndicator row="1" #activityIndicator [busy]="onbusy" width="100" height="100" class="activity-indicator"></ActivityIndicator>
+	-->
+            <RadDataForm tkExampleTitle tkToggleNavButton [source]="report" validationMode="OnLostFocus" (propertyValidate)="onPropertyValidate($event)">
+                <TKPropertyGroup tkDataFormGroups collapsible="true" name="Date & Time">
+                    <TKEntityProperty tkPropertyGroupProperties name="date" displayName="Date">
+                        <TKPropertyEditor tkEntityPropertyEditor type="DatePicker"></TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="time" displayName="Time">
+                        <TKPropertyEditor tkEntityPropertyEditor type="TimePicker"></TKPropertyEditor>
+                    </TKEntityProperty>
+                </TKPropertyGroup>
+                <TKPropertyGroup tkDataFormGroups collapsible="true" name="Fuel Detail">
+                    <TKEntityProperty tkPropertyGroupProperties name="fuel_type" displayName="Fuel Type" [valuesProvider]="fueltype">
+                        <TKPropertyEditor tkEntityPropertyEditor type="SegmentedEditor"></TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Fuel_price" readOnly="true"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Fuel_Volume" readOnly="true"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Amount">
+                        <TKPropertyEditor tkEntityPropertyEditor type="Decimal"></TKPropertyEditor>
+                    </TKEntityProperty>
+                </TKPropertyGroup>
+                <TKPropertyGroup tkDataFormGroups collapsible="true" name="Others">
+                    <TKEntityProperty tkPropertyGroupProperties name="odometer"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="note"></TKEntityProperty>
+                </TKPropertyGroup>
+            </RadDataForm>
+            <Button text="Set Current location" (tap)="enableLocationServices()" *ngIf="!currentGeoLocation"></Button>
+            <Button text="Photo" (tap)="Photo()" class="photo_button"></Button>
+            <Button class="submit_button" (tap)="validation()" text="SAVE"></Button>
+        </StackLayout>
+    </ScrollView>
+    <FlexboxLayout flexDirection="column" *ngIf="currentGeoLocation" class="MapView">
+        <MapView class="Map" (cameraChanged)="onCameraChanged($event)" (coordinateTapped)="onCoordinateTapped($event)" (mapReady)="onMapReady($event)" [zoom]="zoom" [latitude]="latitude" [longitude]="longitude" mapAnimationsEnabled="true"></MapView>
+        <Button class="coordinate_submit_button" text="Done" (tap)="disableMap()"></Button>
+    </FlexboxLayout>
+    <ActivityIndicator row="1" #activityIndicator [busy]="onbusy" width="100" height="100" class="activity-indicator"></ActivityIndicator>
 </GridLayout>

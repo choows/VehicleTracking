@@ -12,13 +12,16 @@ import { ListPicker } from "tns-core-modules/ui/list-picker";
 import { UserService } from "../../shared/user.service";
 import * as imagepicker from "nativescript-imagepicker";
 import * as appSettings from "tns-core-modules/application-settings";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 import { DatePicker } from "tns-core-modules/ui/date-picker";
 import { ImageSource } from "tns-core-modules/image-source/image-source";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
 import { VehicleService } from "../../shared/vehicle.service";
+import { RefuelReport } from "../../dataform-service/reports";
 registerElement("MapView", () => require("nativescript-google-maps-sdk").MapView);
+
 /*
 the data will only submit when pressed, wont resubmit again when refresh or nvaigated
 */
@@ -29,6 +32,7 @@ the data will only submit when pressed, wont resubmit again when refresh or nvai
 })
 export class ReportsRefuelComponent implements OnInit {
 
+    private _refuel_report : RefuelReport ;
     //variable declare here
     onbusy: boolean = false;
     note: string = "";
@@ -50,15 +54,32 @@ export class ReportsRefuelComponent implements OnInit {
     DateStr: string;
     TimeStr: string;
     //constructor
-    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private router: Router, private routerextension: RouterExtensions, private userservice: UserService , private vehicleservice :VehicleService) { }
+    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private router: Router, private routerextension: RouterExtensions, private userservice: UserService, private vehicleservice: VehicleService) { }
 
+    Photo(){
+        dialogs.action({
+            message: "Please select your action",
+            cancelButtonText: "Cancel",
+            actions: ["Take Photo", "Pick From Library"]
+        }).then(result => {
+            if (result == "Take Photo") {
+                this.onTakePicture();
+            } else if (result == "Pick From Library") {
+                this.onPick();
+            }
+        });
+    }
     //on init
     ngOnInit() {
         const currentdate = new Date(Date.now());
-        this.DateStr = currentdate.toDateString();
-        this.TimeStr = currentdate.toLocaleTimeString().slice(0, 9)
-    }
+        const date = currentdate.getFullYear().toString() + "-" + (currentdate.getMonth() +1).toString()+"-" + currentdate.getDate().toString();
+        const time = currentdate.getHours().toString() + ":" + currentdate.getMinutes().toString();
 
+        this._refuel_report = new RefuelReport( date , time ,0 , 0 , 2.05 , 0 , appSettings.getNumber("Odo") , "");
+    }
+    get report(): RefuelReport {
+        return this._refuel_report;
+    }
     //for mapview usage
     enableLocationServices(): void {
         geoLocation.isEnabled().then(enabled => {
@@ -111,36 +132,6 @@ export class ReportsRefuelComponent implements OnInit {
     onCameraChanged(args) {
         this.mapview = args.object;
         this.onCoordinateTapped(args);
-    }
-
-    //picker
-    selectedtype(args) {
-        let picker = <ListPicker>args.object;
-        this.pickedFuelType = this.fueltype[picker.selectedIndex];
-    }
-
-    //for time picker usage
-    onTimeChanged(args) {
-        let timePicker = <TimePicker>args.object;
-        this.date.setHours(timePicker.hour);
-        this.date.setMinutes(timePicker.minute);
-    }
-
-    //for date picker usage
-    onPickerLoaded(args) {
-        let datePicker = <DatePicker>args.object;
-        this.date.setDate(datePicker.day);
-        this.date.setMonth(datePicker.month);
-        this.date.setFullYear(datePicker.year);
-    }
-    onDayChanged(arg) {
-        this.date.setDate(arg.value);
-    }
-    onMonthChanged(arg) {
-        this.date.setMonth(arg.value);
-    }
-    onYearChanged(arg) {
-        this.date.setFullYear(arg.value);
     }
 
     onPick() {
@@ -206,15 +197,18 @@ export class ReportsRefuelComponent implements OnInit {
             });
     }
 
-    //for converting the fuel price
-    ontextchange() {
-        this.fuelVolume = (parseFloat(this.fuelAmount) / this.fuelPrice).toFixed(2);
+    public onPropertyValidate(args) {
+        if (args.propertyName === "Amount") {
+            this._refuel_report.Fuel_Volume = parseFloat((this._refuel_report.Amount / this._refuel_report.Fuel_price ).toFixed(2));
+            console.log(this._refuel_report.Fuel_Volume.toFixed(2));
+        }
     }
 
     onNavBack() {
         this.routerextension.back();
     }
     validation() {
+        /*
         let checker: boolean = true;
         let error: string = "";
         if (this.Odometer == null) {
@@ -233,25 +227,27 @@ export class ReportsRefuelComponent implements OnInit {
             this.submit();
         } else {
             alert(error);
-        }
+        }*/
+        this.submit();
     }
     submit() {
         this.onbusy = true;
-        this.ontextchange();
+        const newdate = new Date(this._refuel_report.date);
+
         let data = {
             "Report_type": "Refuel",
-            "Date": this.DateStr,
-            "Time": this.TimeStr,
+            "Date": newdate.toDateString(),
+            "Time": this._refuel_report.time,
             "Location": {
                 "latitude": this.latitude,
                 "longitude": this.longitude
             },
-            "Fuel_type": this.pickedFuelType,
-            "Fuel_price": this.fuelPrice,
-            "Amount": parseFloat(this.fuelAmount),
-            "Fuel_Volume": this.fuelVolume,
-            "Odometer": parseInt(this.Odometer.toString()),
-            "Note": this.note,
+            "Fuel_type": this.fueltype[this._refuel_report.fuel_type],
+            "Fuel_price": this._refuel_report.Fuel_price,
+            "Amount": this._refuel_report.Amount,
+            "Fuel_Volume": this._refuel_report.Fuel_Volume,
+            "Odometer": this._refuel_report.odometer,
+            "Note": this._refuel_report.note,
             "Image": this.image,
             "Image_path": "-"
         };
@@ -266,34 +262,6 @@ export class ReportsRefuelComponent implements OnInit {
             this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {
             console.log(error);
-        });
-    }
-    showDate() {
-        let options = {
-            context: {
-                isDate: true,
-                isTime: false,
-            },
-            fullscreen: false,
-            viewContainerRef: this.vcRef,
-            //animate : true
-        };
-        this.modal.showModal(DateTimePickerModelComponent, options).then(res => {
-            this.DateStr = res;
-        });
-    }
-    showTime() {
-        let options = {
-            context: {
-                isDate: false,
-                isTime: true,
-            },
-            fullscreen: false,
-            viewContainerRef: this.vcRef,
-            //animate : true
-        };
-        this.modal.showModal(DateTimePickerModelComponent, options).then(res => {
-            this.TimeStr = res;
         });
     }
 }

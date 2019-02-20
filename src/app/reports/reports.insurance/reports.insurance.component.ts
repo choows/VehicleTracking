@@ -15,6 +15,9 @@ import { knownFolders } from "tns-core-modules/file-system/file-system";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
 import { VehicleService } from "../../shared/vehicle.service";
+import { InsuranceReport } from "../../dataform-service/reports";
+import * as dialogs from "tns-core-modules/ui/dialogs";
+
 
 @Component({
     selector: "ReportsInsurance",
@@ -23,6 +26,7 @@ import { VehicleService } from "../../shared/vehicle.service";
 })
 export class ReportsInsuranceComponent implements OnInit {
     
+    private _insurance_report : InsuranceReport;
     image: string;
     insuranceAmount : string;
     insuranceCompany = ["Allianz", "Tokio Merine", "AXA", "UniAsia", "RHB Insurance", "Lonpac", "Berjaya Sampa", "Kurnia"];
@@ -34,7 +38,12 @@ export class ReportsInsuranceComponent implements OnInit {
     onbusy : boolean = false;
     DateStr : string ;
     ngOnInit() {
-        this.DateStr = new Date(Date.now()).toDateString() ;
+        const currentdate = new Date(Date.now());
+        const date = currentdate.getFullYear().toString() + "-" + (currentdate.getMonth() +1).toString()+"-" + currentdate.getDate().toString();
+        this._insurance_report = new InsuranceReport(date , 0 , "",0,0);
+    }
+    get reports() : InsuranceReport{
+        return this._insurance_report;
     }
     constructor(private vcRef: ViewContainerRef,private vehicleservice : VehicleService, private modal: ModalDialogService, private routerextension: RouterExtensions, private userservice: UserService) { }
     onNavBack() {
@@ -46,6 +55,19 @@ export class ReportsInsuranceComponent implements OnInit {
             this.photo();
         }).catch((error) => {
             console.log(error);
+        });
+    }
+    Photo(){
+        dialogs.action({
+            message: "Please select your action",
+            cancelButtonText: "Cancel",
+            actions: ["Take Photo", "Pick From Library"]
+        }).then(result => {
+            if (result == "Take Photo") {
+                this.onTakePicture();
+            } else if (result == "Pick From Library") {
+                this.onPick();
+            }
         });
     }
     photo() {
@@ -76,14 +98,7 @@ export class ReportsInsuranceComponent implements OnInit {
                 console.log("Error -> " + err.message);
             });
     }
-    selectedcompany(args) {
-        let picker = <ListPicker>args.object;
-        this.pickedCompany = this.insuranceCompany[picker.selectedIndex];
-    }
-    selectedtype(args) {
-        let picker = <ListPicker>args.object;
-        this.pickedType = this.insurancetype[picker.selectedIndex];
-    }
+
     onPick(){
         let context = imagepicker.create({
             mode: "single"
@@ -109,47 +124,21 @@ export class ReportsInsuranceComponent implements OnInit {
                 console.log(e);
             });
     }
-    //for date picker usage
-
-    onPickerLoaded(args){
-        let datePicker = <DatePicker>args.object;
-        this.date.setDate(datePicker.day);
-        this.date.setMonth(datePicker.month);
-        this.date.setFullYear(datePicker.year);
-    }
-
-    onDayChanged(arg) {
-        this.date.setDate(arg.value);
-    }
-    onMonthChanged(arg) {
-        this.date.setMonth(arg.value);
-    }
-    onYearChanged(arg) {
-        this.date.setFullYear(arg.value);
-    }
     validation(){
-        let checker: boolean = true;
-        let error: string = "";
-        if (this.insuranceAmount == null) {
-            error += "\nPlease enter the Amount paid. ";
-            checker = false;
-        }
-        if (checker) {
-            this.submit();
-        } else {
-            alert(error);
-        }
+       this.submit();
     }
     submit() {
         this.onbusy = true;
+        const newdate = new Date(this._insurance_report.date);
+
         let data = {
             "Report_type": "Insurance",
-            "Date":  this.DateStr,
-            "Note": this.note,
+            "Date":  newdate.toDateString(),
+            "Note": this._insurance_report.note,
             "Image": this.image,
-            "Amount": parseFloat(this.insuranceAmount),
-            "Company": this.pickedCompany,
-            "Type": this.pickedType,
+            "Amount": this._insurance_report.Amount,
+            "Company": this.insuranceCompany[this._insurance_report.Company],
+            "Type": this.insurancetype[this._insurance_report.Insurance_type],
             "Image_path" : "-"
         }
             this.upload(data);
@@ -160,20 +149,6 @@ export class ReportsInsuranceComponent implements OnInit {
             this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {
             console.log(error);
-        });
-    }
-    showDate() {
-        let options = {
-            context: {
-                isDate: true,
-                isTime: false,
-            },
-            fullscreen: false,
-            viewContainerRef: this.vcRef,
-            //animate : true
-        };
-        this.modal.showModal(DateTimePickerModelComponent, options).then(res => {
-            this.DateStr = res;
         });
     }
 }

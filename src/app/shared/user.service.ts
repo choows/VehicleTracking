@@ -186,7 +186,7 @@ export class UserService {
             });
     }
     NxtService(nxt){
-        let path: string = "Users/" + appSettings.getString("user_id") + "/" + appSettings.getString("vehicle_key") + "/Next_Service";
+        let path: string = "Users/" + appSettings.getString("user_id") + "/Vehicles/" + appSettings.getString("plate_no") + "/Next_Service";
         firebase.setValue(path , nxt).catch((err)=>{
             console.log(err);
         });

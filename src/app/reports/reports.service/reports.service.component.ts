@@ -13,7 +13,9 @@ import { UserService } from "../../shared/user.service";
 import { DatePicker } from "tns-core-modules/ui/date-picker";
 import { ImageSource} from "tns-core-modules/image-source/image-source";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
+import { ServiceReport } from "../../dataform-service/reports";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
 import { VehicleService } from "../../shared/vehicle.service";
 
@@ -25,6 +27,7 @@ import { VehicleService } from "../../shared/vehicle.service";
 
 export class ReportsServiceComponent implements OnInit {
 
+    private _service_Report : ServiceReport;
     note: string;
     data = [];
     serviceAmount: string;
@@ -56,59 +59,23 @@ export class ReportsServiceComponent implements OnInit {
         }
     }
     ngOnInit() {
-        this.date = new Date(Date.now());
-        this.NextService_Odometer = this.odo_hint + 5000 ;
         const currentdate = new Date(Date.now());
-        this.DateStr = currentdate.toDateString();
-        this.TimeStr = currentdate.toLocaleTimeString().slice(0, 9)
+        const date = currentdate.getFullYear().toString() + "-" + (currentdate.getMonth() +1).toString()+"-" + currentdate.getDate().toString();
+        const nxt_date = currentdate.getFullYear().toString() + "-" + (currentdate.getMonth() +7).toString()+"-" + currentdate.getDate().toString();
+
+        const time = currentdate.getHours().toString() + ":" + currentdate.getMinutes().toString();
+        this._service_Report = new ServiceReport(0 , date , time , appSettings.getNumber("Odo") , "" , appSettings.getNumber("Odo") + 5000 ,nxt_date );
     }
     constructor(private vcRef: ViewContainerRef,private vehicleservice: VehicleService, private modal: ModalDialogService,private routerextension: RouterExtensions, private userservice: UserService) { }
     onNavBack() {
         this.routerextension.back();
     }
 
-    //for date picker usage
-    onPickerLoaded(args) {
-        let datePicker = <DatePicker>args.object;
-        this.date.setDate(datePicker.day);
-        this.date.setMonth(datePicker.month);
-        this.date.setFullYear(datePicker.year);
-    }
-    onDayChanged(arg) {
-        this.date.setDate(arg.value);
-    }
-    onMonthChanged(arg) {
-        this.date.setMonth(arg.value);
-    }
-    onYearChanged(arg) {
-        this.date.setFullYear(arg.value);
+    get report() : ServiceReport{
+        return this._service_Report;
     }
 
-    //for Nxt service Date Picker
-    NxtService : Date = new Date(Date.now());
-    NxtonPickerLoaded(args) {
-        let datePicker = <DatePicker>args.object;
-        this.NxtService.setDate(datePicker.day);
-        this.NxtService.setMonth(datePicker.month);
-        this.NxtService.setFullYear(datePicker.year);
-    }
-    NxtonDayChanged(arg) {
-        this.NxtService.setDate(arg.value);
-    }
-    NxtonMonthChanged(arg) {
-        this.NxtService.setMonth(arg.value);
-    }
-    NxtonYearChanged(arg) {
-        this.NxtService.setFullYear(arg.value);
-    }
-
-    //for time picker usage
-    onTimeChanged(args) {
-        let timePicker = <TimePicker>args.object;
-        this.date.setHours(timePicker.hour);
-        this.date.setMinutes(timePicker.minute);
-    }
-
+    
     //mapview component below
     enableLocationServices(): void {
         geoLocation.isEnabled().then(enabled => {
@@ -195,6 +162,19 @@ export class ReportsServiceComponent implements OnInit {
             console.log(error);
         });
     }
+    Photo(){
+        dialogs.action({
+            message: "Please select your action",
+            cancelButtonText: "Cancel",
+            actions: ["Take Photo", "Pick From Library"]
+        }).then(result => {
+            if (result == "Take Photo") {
+                this.onTakePicture();
+            } else if (result == "Pick From Library") {
+                this.onPick();
+            }
+        });
+    }
     photo() {
         camera.takePicture().
             then((imageAsset) => {
@@ -223,48 +203,32 @@ export class ReportsServiceComponent implements OnInit {
             });
     }
     validation() {
-        let checker: boolean = true;
-        let error: string = "";
-        if (this.Odometer == null) {
-            this.Odometer = this.odo_hint + 1;
-        }
-        if (this.serviceAmount == null) {
-            error += "\nPlease enter the Amount paid. ";
-            checker = false;
-        }
-        //normal odometer with 6 digit , some got 7 digit
-        if (this.Odometer > 9999999 || this.Odometer <= 0) {
-            error += "\nPlease enter the correct odometer reading.(0000000 - 9999999) ";
-            checker = false;
-        }
-        if (checker) {
-            this.submit();
-        } else {
-            alert(error);
-        }
+        this.submit();
     }
     //submit button
     submit() {
         this.onbusy = true;
         let current_date: string = this.date.toDateString();
+        const newdate = new Date(this._service_Report.date);
+        const servicedate = new Date(this._service_Report.next_date);
         let data = {
             "Report_type": "Service",
-            "Date": current_date,
-            "Time": this.date.toLocaleTimeString().slice(0, 9),
+            "Date": newdate.toDateString(),
+            "Time": this._service_Report.time,
             "Location": {
                 "latitude": this.latitude,
                 "longitude": this.longitude
             },
-            "Odometer": parseInt(this.Odometer.toString()),
-            "Note": this.note,
+            "Odometer": this._service_Report.odometer,
+            "Note": this._service_Report.note,
             "Image": this.image,
-            "Amount": parseFloat(this.serviceAmount),
+            "Amount": this._service_Report.Amount,
             "Parts": this.data.toString(),
             "Image_path" : "-"
         };
         const nxt= {
-            Date : this.NxtService.toDateString(),
-            Odometer : this.NextService_Odometer,
+            Date : servicedate.toDateString(),
+            Odometer : this._service_Report.next_odometer,
         }
         this.userservice.NxtService(nxt);
         this.upload(data);

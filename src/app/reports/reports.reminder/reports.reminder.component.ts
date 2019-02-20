@@ -8,11 +8,14 @@ import { TimePicker } from "tns-core-modules/ui/time-picker/time-picker";
 import * as appSettings from "tns-core-modules/application-settings";
 import { UserService } from "../../shared/user.service";
 import { DatePicker } from "tns-core-modules/ui/date-picker";
+import * as imagepicker from "nativescript-imagepicker";
 import { ImageSource} from "tns-core-modules/image-source/image-source";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
 import { VehicleService } from "../../shared/vehicle.service";
+import { ReminderReport } from "../../dataform-service/reports";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 
 @Component({
     selector: "ReportsReminder",
@@ -20,6 +23,7 @@ import { VehicleService } from "../../shared/vehicle.service";
     templateUrl: "./reports.reminder.component.html"
 })
 export class ReportsReminderComponent implements OnInit {
+    private _reminder_report : ReminderReport;
     note: string;
     image: string;
     date = new Date();
@@ -28,34 +32,30 @@ export class ReportsReminderComponent implements OnInit {
     TimeStr : string ;
     ngOnInit() {
         const currentdate = new Date(Date.now());
-        this.DateStr = currentdate.toDateString();
-        this.TimeStr = currentdate.toLocaleTimeString().slice(0, 9)
+        const date = currentdate.getFullYear().toString() + "-" + (currentdate.getMonth() +1).toString()+"-" + currentdate.getDate().toString();
+        const time = currentdate.getHours().toString() + ":" + currentdate.getMinutes().toString();
+        this._reminder_report = new ReminderReport(date , time , "" );
+       
+     }
+     get report() : ReminderReport{
+         return this._reminder_report;
      }
     constructor(private vcRef: ViewContainerRef,private vehicleservice : VehicleService, private modal: ModalDialogService, private routerextension: RouterExtensions, private userservice: UserService) { }
     onNavBack() {
         this.routerextension.back();
     }
-    onTimeChanged(args) {
-        let timePicker = <TimePicker>args.object;
-        this.date.setHours(timePicker.hour);
-        this.date.setMinutes(timePicker.minute);
-    }
-    //date picker done
-    onPickerLoaded(args){
-        let datePicker = <DatePicker>args.object;
-        this.date.setDate(datePicker.day);
-        this.date.setMonth(datePicker.month);
-        this.date.setFullYear(datePicker.year);
-    }
-
-    onDayChanged(arg) {
-        this.date.setDate(arg.value);
-    }
-    onMonthChanged(arg) {
-        this.date.setMonth(arg.value);
-    }
-    onYearChanged(arg) {
-        this.date.setFullYear(arg.value);
+    Photo(){
+        dialogs.action({
+            message: "Please select your action",
+            cancelButtonText: "Cancel",
+            actions: ["Take Photo", "Pick From Library"]
+        }).then(result => {
+            if (result == "Take Photo") {
+                this.onTakePicture();
+            } else if (result == "Pick From Library") {
+                this.onPick();
+            }
+        });
     }
     //for camera usage
     onTakePicture() {
@@ -93,14 +93,39 @@ export class ReportsReminderComponent implements OnInit {
                 console.log("Error -> " + err.message);
             });
     }
-
+    onPick(){
+        let context = imagepicker.create({
+            mode: "single"
+        });
+        let file = knownFolders.temp().getFile("Tempo.png");
+        context
+            .authorize()
+            .then(function () {
+                return context.present();
+            })
+            .then(function (selection) {
+                selection.forEach(function (selected) {
+                        let image_source = new ImageSource();
+                        image_source.fromAsset(selected).then((result) => {
+                            result.saveToFile(file.path, "png");
+                        }).catch((err) => {
+                            console.log(err);
+                        });
+                });
+            }).then((res) => {
+               this.image = file.path;
+            }).catch(function (e) {
+                console.log(e);
+            });
+    }
     submit() {
         this.onbusy = true;
+        const newdate = new Date(this._reminder_report.date);
         let data = {
             "Report_type": "Reminder",
-            "Date": this.DateStr,
-            "Time": this.TimeStr,
-            "Note": this.note,
+            "Date": newdate.toDateString(),
+            "Time": this._reminder_report.time,
+            "Note": this._reminder_report.note,
             "Image": this.image,
             "Image_path" : "-"
         };
@@ -113,34 +138,6 @@ export class ReportsReminderComponent implements OnInit {
             this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {
             console.log(error);
-        });
-    }
-    showDate() {
-        let options = {
-            context: {
-                isDate: true,
-                isTime: false,
-            },
-            fullscreen: false,
-            viewContainerRef: this.vcRef,
-            //animate : true
-        };
-        this.modal.showModal(DateTimePickerModelComponent, options).then(res => {
-            this.DateStr = res;
-        });
-    }
-    showTime() {
-        let options = {
-            context: {
-                isDate: false,
-                isTime: true,
-            },
-            fullscreen: false,
-            viewContainerRef: this.vcRef,
-            //animate : true
-        };
-        this.modal.showModal(DateTimePickerModelComponent, options).then(res => {
-            this.TimeStr = res;
         });
     }
 }

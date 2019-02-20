@@ -47,7 +47,7 @@ export class SummaryService {
                 this.result = this.rearrange(result);
                 this.costperday(result);
             }).then(() => {
-                this.getFuelPrice().then(()=>{
+                this.getFuelPrice().then(() => {
                     resolve();
                 });
             }).catch((err) => {
@@ -76,11 +76,14 @@ export class SummaryService {
     private rearrange(result: JSON) {
         let usage_per_vehicle: any[] = [];
         for (var vehicles in result) {
-            const vehicle_report = result[vehicles]["Reports"]["Total"];
-            usage_per_vehicle.push({
-                plate_number: vehicles,
-                usage: vehicle_report["Total_Cost"]
-            });
+            if (typeof result[vehicles]["Reports"] !== "undefined") {
+                const vehicle_report = result[vehicles]["Reports"]["Total"];
+                usage_per_vehicle.push({
+                    plate_number: vehicles,
+                    usage: vehicle_report["Total_Cost"]
+                });
+            }
+
         }
         return usage_per_vehicle;
     }
@@ -136,7 +139,7 @@ export class SummaryService {
                         Diesel: fuelprice["Diesel"]
                     });
                 }
-                resolve() ;
+                resolve();
             }).catch((err) => {
                 console.log(err);
                 reject();

@@ -1,10 +1,10 @@
-import { Component, OnInit,ViewContainerRef } from "@angular/core";
+import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { Router } from "@angular/router";
 import * as applicationModule from "tns-core-modules/application";
 import { RouterExtensions } from "nativescript-angular/router";
 import * as geoLocation from "nativescript-geolocation";
 import * as camera from "nativescript-camera";
-import { ImageSource} from "tns-core-modules/image-source/image-source";
+import { ImageSource } from "tns-core-modules/image-source/image-source";
 import { knownFolders } from "tns-core-modules/file-system/file-system";
 import { Image } from "ui/image";
 import { MapView, Marker, Position } from 'nativescript-google-maps-sdk';
@@ -13,10 +13,12 @@ import { ListPicker } from "tns-core-modules/ui/list-picker";
 import * as appSettings from "tns-core-modules/application-settings";
 import { UserService } from "../../shared/user.service";
 import { DatePicker } from "tns-core-modules/ui/date-picker";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 import * as imagepicker from "nativescript-imagepicker";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
 import { VehicleService } from "../../shared/vehicle.service";
+import { ExpensesReport } from "../../dataform-service/reports";
 
 @Component({
     selector: "ReportsExpenses",
@@ -24,7 +26,8 @@ import { VehicleService } from "../../shared/vehicle.service";
     templateUrl: "./reports.expenses.component.html",
 })
 export class ReportsExpensesComponent implements OnInit {
-    onbusy : boolean = false;
+    private _expensesReport : ExpensesReport;
+    onbusy: boolean = false;
     latitude = 0;
     longitude = 0;
     zoom = 20;
@@ -39,50 +42,20 @@ export class ReportsExpensesComponent implements OnInit {
     pickedexpensestype;
     image: string;
     note: string;
-    DateStr : string ;
-    TimeStr : string;
-    ngOnInit() { 
-        const current_date = new Date(Date.now());
-        this.DateStr = current_date.toDateString();
-        this.TimeStr = current_date.toLocaleTimeString().slice(0, 9);
+    DateStr: string;
+    TimeStr: string;
+    ngOnInit() {
+        const currentdate = new Date(Date.now());
+        const date = currentdate.getFullYear().toString() + "-" + (currentdate.getMonth() +1).toString()+"-" + currentdate.getDate().toString();
+        const time = currentdate.getHours().toString() + ":" + currentdate.getMinutes().toString();
+        this._expensesReport = new ExpensesReport(date , time , 0 , 0 , appSettings.getNumber("Odo") , "");
     }
-    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService,private vehicleservice : VehicleService, private routerextension: RouterExtensions, private userservice: UserService) { }
+    get report(): ExpensesReport {
+        return this._expensesReport;
+    }
+    constructor(private vcRef: ViewContainerRef, private modal: ModalDialogService, private vehicleservice: VehicleService, private routerextension: RouterExtensions, private userservice: UserService) { }
     onNavBack() {
         this.routerextension.back();
-    }
-
-
-    //picker
-    selectedtype(args) {
-        let picker = <ListPicker>args.object;
-        this.pickedexpensestype = this.expensestype[picker.selectedIndex];
-    }
-
-
-    //for time picker usage
-    onTimeChanged(args) {
-        let timePicker = <TimePicker>args.object;
-        this.date.setHours(timePicker.hour);
-        this.date.setMinutes(timePicker.minute);
-    }
-
-    //for date picker usage
-    onPickerLoaded(args) {
-        let datePicker = <DatePicker>args.object;
-        this.date.setDate(datePicker.day);
-        this.date.setMonth(datePicker.month);
-        this.date.setFullYear(datePicker.year);
-    }
-
-    onDayChanged(arg) {
-        this.date.setDate(arg.value);
-    }
-    onMonthChanged(arg) {
-        console.log(arg);
-        this.date.setMonth(arg.value);
-    }
-    onYearChanged(arg) {
-        this.date.setFullYear(arg.value);
     }
 
     //for mapview
@@ -92,6 +65,20 @@ export class ReportsExpensesComponent implements OnInit {
                 geoLocation.enableLocationRequest().then(() => this.setLocation());
             } else {
                 this.setLocation();
+            }
+        });
+    }
+
+    Photo(){
+        dialogs.action({
+            message: "Please select your action",
+            cancelButtonText: "Cancel",
+            actions: ["Take Photo", "Pick From Library"]
+        }).then(result => {
+            if (result == "Take Photo") {
+                this.onTakePicture();
+            } else if (result == "Pick From Library") {
+                this.onPick();
             }
         });
     }
@@ -141,24 +128,24 @@ export class ReportsExpensesComponent implements OnInit {
         });
         let file = knownFolders.temp().getFile("Tempo.png");
         context
-        .authorize()
-        .then(function () {
-            return context.present();
-        })
-        .then(function (selection) {
-            selection.forEach(function (selected) {
+            .authorize()
+            .then(function () {
+                return context.present();
+            })
+            .then(function (selection) {
+                selection.forEach(function (selected) {
                     let image_source = new ImageSource();
                     image_source.fromAsset(selected).then((result) => {
                         result.saveToFile(file.path, "png");
                     }).catch((err) => {
                         console.log(err);
                     });
+                });
+            }).then((res) => {
+                this.image = file.path;
+            }).catch(function (e) {
+                console.log(e);
             });
-        }).then((res) => {
-           this.image = file.path;
-        }).catch(function (e) {
-            console.log(e);
-        });
     }
     //for camera
     onTakePicture() {
@@ -179,15 +166,15 @@ export class ReportsExpensesComponent implements OnInit {
                     if (applicationModule.ios) {
                         let file = knownFolders.temp().getFile("PhotoImage.png");
                         let image_source = new ImageSource();
-                        image_source.fromAsset(imageAsset).then((res)=>{
-                            res.saveToFile(file.path , "png");
-                            
-                        }).then(()=>{
+                        image_source.fromAsset(imageAsset).then((res) => {
+                            res.saveToFile(file.path, "png");
+
+                        }).then(() => {
                             this.image = file.path;
                         })
-                        .catch((err)=>{
-                            console.log(err);
-                        });
+                            .catch((err) => {
+                                console.log(err);
+                            });
                     } else {
                         throw (DOMException);
                     }
@@ -196,43 +183,27 @@ export class ReportsExpensesComponent implements OnInit {
                 console.log("Error -> " + err.message);
             });
     }
-    validation(){
-        let checker: boolean = true;
-        let error: string = "";
-        if(this.Odometer == null){
-            this.Odometer = this.odo_hint +1 ;
-        }
-        if (this.expensesAmount == null) {
-            error += "\nPlease enter the Amount paid. ";
-            checker = false;
-        }
-        //normal odometer with 6 digit , some got 7 digit
-        if (this.Odometer > 9999999 || this.Odometer <= 0) {
-            error += "\nPlease enter the correct odometer reading.(0000000 - 9999999) ";
-            checker = false;
-        }
-        if (checker) {
-            this.submit();
-        } else {
-            alert(error);
-        }
+    validation() {
+        this.submit();
     }
     submit() {
         this.onbusy = true;
+        const newdate = new Date(this._expensesReport.date);
+
         let data = {
             "Report_type": "Expenses",
-            "Date": this.DateStr,
-            "Time": this.TimeStr,
+            "Date": newdate.toDateString(),
+            "Time": this._expensesReport.time,
             "Location": {
                 "latitude": this.latitude,
                 "longitude": this.longitude
             },
-            "Odometer": parseInt(this.Odometer.toString()),
-            "Note": this.note,
+            "Odometer": this._expensesReport.odometer,
+            "Note": this._expensesReport.note,
             "Image": this.image,
-            "Image_path" : "-",
-            "Expenses_type": this.pickedexpensestype,
-            "Amount": parseFloat(this.expensesAmount)
+            "Image_path": "-",
+            "Expenses_type": this.expensestype[this._expensesReport.Expenses_type],
+            "Amount": this._expensesReport.Amount
         }
         this.upload(data);
     }
@@ -242,34 +213,6 @@ export class ReportsExpensesComponent implements OnInit {
             this.routerextension.navigate(["/home"], { clearHistory: true });
         }).catch((error) => {
             console.log(error);
-        });
-    }
-    showDate() {
-        let options = {
-            context: {
-                isDate: true,
-                isTime: false,
-            },
-            fullscreen: false,
-            viewContainerRef: this.vcRef,
-            //animate : true
-        };
-        this.modal.showModal(DateTimePickerModelComponent, options).then(res => {
-            this.DateStr = res;
-        });
-    }
-    showTime() {
-        let options = {
-            context: {
-                isDate: false,
-                isTime: true,
-            },
-            fullscreen: false,
-            viewContainerRef: this.vcRef,
-            //animate : true
-        };
-        this.modal.showModal(DateTimePickerModelComponent, options).then(res => {
-            this.TimeStr = res;
         });
     }
 }
