@@ -16,7 +16,6 @@ import { DatePicker } from "tns-core-modules/ui/date-picker";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import * as imagepicker from "nativescript-imagepicker";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
-import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
 import { VehicleService } from "../../shared/vehicle.service";
 import { ExpensesReport } from "../../dataform-service/reports";
 

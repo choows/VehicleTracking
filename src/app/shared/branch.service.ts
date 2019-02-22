@@ -120,6 +120,9 @@ export class BranchService {
         });
     }
 
+    getVehicleDetail(plate_no : string){
+        return this.BranchVehicle[plate_no];
+    }
 
     /**
      * Fetch branch vehicle detail 

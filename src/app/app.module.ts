@@ -24,11 +24,11 @@ import { MasterBranchViewComponent } from "./Master-Branch-View/Master-Branch-Vi
 import { ViewQrCodeComponent } from "./ViewQRCode/ViewQRCode.component";
 import { BarcodeScanner } from 'nativescript-barcodescanner';
 import { BranchViewVehicleComponent } from "./Master-Branch-View/Branch_View_Vehicle/Branch_View_Vehicle.component";
-import { DateTimePickerModelComponent } from "../app/reports/DateTimePickerModel/DateTimePickerModel.component";
 import { VehicleService } from "../app/shared/vehicle.service";
 import { BranchService } from "../app/shared/branch.service";
 import { SummaryService } from "../app/shared/summary.service";
 import { ProfileService } from "../app/shared/user_profile.service";
+import {VehicleDetailComponent} from "../app/list/VehicleDetail/VehicleDetail.component";
 declare var GMSServices: any;
 if (platform.isIOS) {
     GMSServices.provideAPIKey("AIzaSyDRfjOnHTI8ztt1MZ6PmI5PqiE1LJ2QjUA");
@@ -62,7 +62,7 @@ if (platform.isIOS) {
         ReportsServiceComponent,
         StatisticsComponent,
         MasterBranchViewComponent,
-        DateTimePickerModelComponent
+        VehicleDetailComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
@@ -75,8 +75,8 @@ if (platform.isIOS) {
         BranchService,
         SummaryService,
     ],
-    entryComponents: [
-        DateTimePickerModelComponent
+    entryComponents : [
+        VehicleDetailComponent
     ]
 })
 export class AppModule {

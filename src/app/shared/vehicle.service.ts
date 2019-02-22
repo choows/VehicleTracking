@@ -189,6 +189,10 @@ export class VehicleService {
 
     }
 
+    getVehicleDetail(plate_no : string){
+        return this.Vehicle_Detail[plate_no];
+    }
+
     /**
      * Fetch Vehicle Report
      * 

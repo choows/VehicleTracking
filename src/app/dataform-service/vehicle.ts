@@ -14,3 +14,32 @@ export class Vehicle {
         this.odometer = odometer;
     }
 }
+
+export class VehicleDetail{
+   public plate_num :string; 
+   public Odometer : number ; 
+   public Manufacturer : string;
+   public Tank_capacity :number;
+   public Type : string;
+   public Next_Service_Date : string;
+   public Next_Service_Odometer : number;
+   public Refuel : number;
+   public Service : number;
+   public Insurance : number;
+   public Expenses : number;
+   constructor(plate_num : string, Odometer: number , Manufacturer : string , Tank_cap : number,
+    type : string, Nxt_date : string , Nxt_odo : number , Refuel : number , Service:number , Expenses : number
+    , Insurance : number){
+        this.plate_num = plate_num;
+        this.Odometer = Odometer;
+        this.Manufacturer = Manufacturer;
+        this.Tank_capacity = Tank_cap;
+        this.Type = type;
+        this.Next_Service_Date = Nxt_date;
+        this.Next_Service_Odometer = Nxt_odo;
+        this.Refuel = Refuel;
+        this.Service = Service;
+        this.Insurance = Insurance;
+        this.Expenses = Expenses;
+    }
+}

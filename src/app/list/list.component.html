@@ -1,16 +1,14 @@
 <ActionBar class="action-bar">
-   <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>-->
+    <!-- <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>-->
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBack()"></NavigationButton>
     <Label class="action-bar-title" [text]="name"></Label>
+    <ActionItem text="Detail" ios.position="right" android.position="right" (tap)="showDetail()"></ActionItem>
 </ActionBar>
 <GridLayout class="ListBackGround" rows="auto, *">
-    <RadListView class="list-group" #myListView (itemSelected)="onItemTap($event)" (itemLoading)="onItemLoading($event)" [items]="data" row="1"
-        selectionBehavior="Press , LongPress" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)">
-        <ListViewLinearLayout tkListViewLayout ios:itemHeight="200" scrollDirection="Vertical" spanCount="1"
-            itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
+    <RadListView class="list-group" #myListView (itemSelected)="onItemTap($event)" (itemLoading)="onItemLoading($event)" [items]="data" row="1" selectionBehavior="Press , LongPress" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)">
+        <ListViewLinearLayout tkListViewLayout ios:itemHeight="200" scrollDirection="Vertical" spanCount="1" itemInsertAnimation="Default" itemDeleteAnimation="Default"></ListViewLinearLayout>
         <ng-template tkTemplateKey="details" kListItemTemplate let-item="item">
-            <WrapLayout (tap)="onItemTap($event)" (longPress)="onLongPress($event)" class="list-group-item" rows="*"
-                columns="auto, *">
+            <WrapLayout (tap)="onItemTap($event)" (longPress)="onLongPress($event)" class="list-group-item" rows="*" columns="auto, *">
                 <WebImage rounded="false" row="*" col="0" [src]="item.Photo" class="thumb img-circle"></WebImage>
                 <StackLayout row="*" col="1" class="container">
                     <label row="1" col="1" [text]="item.Date"></label>
@@ -24,14 +22,9 @@
         </ng-template>
     </RadListView>
     <Fab *ngIf="!branch" row="1" #mainFAB (tap)="animation()" icon="res://plus" rippleColor="#f1f1f1" class="fab-button" swipeAnimation="slideUp"></Fab>
-    <Fab *ngIf="!branch" row="1" #FAB1 (tap)="toRefuel()" [isEnabled]="!slide_out" icon="res://refuel" rippleColor="#f1f1f1" class="fab-button_1"
-        swipeAnimation="slideUp"></Fab>
-    <Fab *ngIf="!branch" row="1" #FAB2 (tap)="toService()" [isEnabled]="!slide_out" icon="res://service" rippleColor="#f1f1f1" class="fab-button_2"
-        swipeAnimation="slideUp"></Fab>
-    <Fab *ngIf="!branch" row="1" #FAB3 (tap)="toExpenses()" [isEnabled]="!slide_out" icon="res://expenses" rippleColor="#f1f1f1" class="fab-button_3"
-        swipeAnimation="slideUp"></Fab>
-    <Fab *ngIf="!branch" row="1" #FAB4 (tap)="toReminder()" [isEnabled]="!slide_out" icon="res://reminder" rippleColor="#f1f1f1" class="fab-button_4"
-        swipeAnimation="slideUp"></Fab>
-    <Fab *ngIf="!branch" row="1" #FAB5 (tap)="toInsurance()" [isEnabled]="!slide_out" icon="res://insurance" rippleColor="#f1f1f1"
-        class="fab-button_5" swipeAnimation="slideUp"></Fab>
+    <Fab *ngIf="!branch" row="1" #FAB1 (tap)="toRefuel()" [isEnabled]="!slide_out" icon="res://refuel" rippleColor="#f1f1f1" class="fab-button_1" swipeAnimation="slideUp"></Fab>
+    <Fab *ngIf="!branch" row="1" #FAB2 (tap)="toService()" [isEnabled]="!slide_out" icon="res://service" rippleColor="#f1f1f1" class="fab-button_2" swipeAnimation="slideUp"></Fab>
+    <Fab *ngIf="!branch" row="1" #FAB3 (tap)="toExpenses()" [isEnabled]="!slide_out" icon="res://expenses" rippleColor="#f1f1f1" class="fab-button_3" swipeAnimation="slideUp"></Fab>
+    <Fab *ngIf="!branch" row="1" #FAB4 (tap)="toReminder()" [isEnabled]="!slide_out" icon="res://reminder" rippleColor="#f1f1f1" class="fab-button_4" swipeAnimation="slideUp"></Fab>
+    <Fab *ngIf="!branch" row="1" #FAB5 (tap)="toInsurance()" [isEnabled]="!slide_out" icon="res://insurance" rippleColor="#f1f1f1" class="fab-button_5" swipeAnimation="slideUp"></Fab>
 </GridLayout>

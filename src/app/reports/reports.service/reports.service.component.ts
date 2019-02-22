@@ -16,7 +16,6 @@ import { knownFolders } from "tns-core-modules/file-system/file-system";
 import { ServiceReport } from "../../dataform-service/reports";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import * as dialogs from "tns-core-modules/ui/dialogs";
-import { DateTimePickerModelComponent } from "../DateTimePickerModel/DateTimePickerModel.component";
 import { VehicleService } from "../../shared/vehicle.service";
 
 @Component({

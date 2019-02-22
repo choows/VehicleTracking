@@ -532,3 +532,15 @@ $sidedrawer-list-icon-size: 20;
 .action-bar {
     background: #886aea;
 }
+
+RadDataForm {
+    //for the data form 
+    padding: 5;
+    TKPropertyGroup {
+        font-size: 50;
+    }
+}
+
+tkPropertyGroupProperties {
+    font-size: 150;
+}

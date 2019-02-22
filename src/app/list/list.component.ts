@@ -15,6 +15,8 @@ import { isIOS } from "platform"
 import { CardView } from 'nativescript-cardview';
 import { VehicleService } from "../shared/vehicle.service";
 import { BranchService } from "../shared/branch.service";
+import { VehicleDetailComponent } from "../list/VehicleDetail/VehicleDetail.component";
+import { Vehicle } from "../dataform-service/vehicle";
 registerElement('CardView', () => CardView);
 registerElement("Fab", () => require("nativescript-floatingactionbutton").Fab);
 
@@ -28,7 +30,7 @@ export class ListComponent implements OnInit {
     name = "";
     slide_out: boolean = true;  //to check the float action button whether slided out or not. 
     branch: boolean = false;  // to check whether is a branch view or not 
-    constructor(private branchservice : BranchService ,private vcRef: ViewContainerRef, private modal: ModalDialogService, private routerextension: RouterExtensions, private route: ActivatedRoute, private vehicleservice: VehicleService) { }
+    constructor(private branchservice: BranchService, private vcRef: ViewContainerRef, private modal: ModalDialogService, private routerextension: RouterExtensions, private route: ActivatedRoute, private vehicleservice: VehicleService) { }
     /**
      * allow the user to navigate back 
      */
@@ -38,6 +40,66 @@ export class ListComponent implements OnInit {
     onDrawerButtonTap(): void {
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.showDrawer();
+    }
+    /**
+     * display the vehicle detail
+     */
+    showDetail() {
+        const plate_no = appSettings.getString("plate_no");
+        let vehicle: JSON;
+        if (this.branch) {
+            vehicle = this.branchservice.getVehicleDetail(plate_no);
+        } else {
+            vehicle = this.vehicleservice.getVehicleDetail(plate_no);
+        }
+        var refuel: number = 0;
+        var Service: number = 0;
+        var Insurance: number = 0;
+        var Expenses: number = 0;
+        
+        if (typeof vehicle["Reports"]["Refuel"] !== "undefined") {
+            refuel = vehicle["Reports"]["Refuel"]["Total_Amount"];
+        }
+        if (typeof vehicle["Reports"]["Service"]!== "undefined") {
+            Service = vehicle["Reports"]["Service"]["Total_Amount"];
+        }
+        if (typeof vehicle["Reports"]["Insurance"] !== "undefined") {
+            Insurance = vehicle["Reports"]["Insurance"]["Total_Amount"];
+        }
+        if (typeof vehicle["Reports"]["Expenses"] !== "undefined") {
+            Expenses = vehicle["Reports"]["Expenses"]["Total_Amount"];
+        }
+        var Next_Service = {
+            Date: "-",
+            Odometer: "-"
+        }
+        if (typeof vehicle["Next_Service"] !== "undefined") {
+            Next_Service = vehicle["Next_Service"]
+        }
+        let items = {
+            "Plate_no": plate_no,
+            "Image": vehicle["Image"],
+            "Odometer": vehicle["current_Odo"],
+            "Manufacturer": vehicle["manufacturer"],
+            "Tank_Capacity": vehicle["tank_capacity"],
+            "Type": vehicle["type"],
+            "Next_Service_Date": Next_Service["Date"],
+            "Next_Service_Odometer": Next_Service["Odometer"],
+            "Refuel": refuel,
+            "Service": Service,
+            "Insurance": Insurance,
+            "Expenses": Expenses,
+        };
+        let options = {
+            context: items,
+            fullscreen: false,
+            viewContainerRef: this.vcRef,
+            //animate : true
+        };
+        this.modal.showModal(VehicleDetailComponent, options).then(res => {
+            console.log(res);
+        });
+
     }
     /**
      * 

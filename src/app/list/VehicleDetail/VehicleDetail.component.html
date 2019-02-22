@@ -1,0 +1,27 @@
+<GridLayout>
+    <ScrollLayout margin-top="5%">
+        <StackLayout>
+            <WebImage rounded="true" class="profile_pic_1" [src]="this.Image" stretch="aspectFill" height="20%" margin-top="5%"></WebImage>
+            <RadDataForm tkExampleTitle tkToggleNavButton class="RadDataF" [source]="reports" [isReadOnly]="true" (tap)="close()">
+                <TKPropertyGroup tkDataFormGroups collapsible="false" name="Vehicle Detail">
+                    <TKEntityProperty tkPropertyGroupProperties name="plate_num" displayName="Plate Number"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Manufacturer" displayName="Manufacturer"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Type" displayName="Vehicle Type"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Tank_capacity" displayName="Tank Capacity"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Odometer" displayName="Ocometer"></TKEntityProperty>
+                </TKPropertyGroup>
+                <TKPropertyGroup tkDataFormGroups collapsible="false" name="Next Service">
+                    <TKEntityProperty tkPropertyGroupProperties name="Next_Service_Date" displayName="Date"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Next_Service_Odometer" displayName="Odometer Reading"></TKEntityProperty>
+                </TKPropertyGroup>
+                <TKPropertyGroup tkDataFormGroups collapsible="false" name="Usage">
+                    <TKEntityProperty tkPropertyGroupProperties name="Refuel" displayName="Refuel(RM)"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Service" displayName="Service(RM)"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Insurance" displayName="Insurance(RM)"></TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Expenses" displayName="Expenses(RM)"></TKEntityProperty>
+                </TKPropertyGroup>
+            </RadDataForm>
+            <Button height="15%" text="CLOSE" class="submit_button" (tap)="close()"></Button>
+        </StackLayout>
+    </ScrollLayout>
+</GridLayout>
