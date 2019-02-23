@@ -4,21 +4,68 @@
             <WebImage rounded="true" class="profile_pic_1" [src]="this.Image" stretch="aspectFill" height="20%" margin-top="5%"></WebImage>
             <RadDataForm tkExampleTitle tkToggleNavButton class="RadDataF" [source]="reports" [isReadOnly]="true" (tap)="close()">
                 <TKPropertyGroup tkDataFormGroups collapsible="false" name="Vehicle Detail">
-                    <TKEntityProperty tkPropertyGroupProperties name="plate_num" displayName="Plate Number"></TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Manufacturer" displayName="Manufacturer"></TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Type" displayName="Vehicle Type"></TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Tank_capacity" displayName="Tank Capacity"></TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Odometer" displayName="Ocometer"></TKEntityProperty>
+                    <TKGroupTitleStyle tkPropertyGroupTitleStyle fillColor="#9426e2" labelTextSize="15" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif" labelFontStyle="Bold" labelTextColor="White"></TKGroupTitleStyle>
+                    <TKEntityProperty tkPropertyGroupProperties name="plate_num" displayName="Plate Number">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Manufacturer" displayName="Manufacturer">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Type" displayName="Vehicle Type">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Tank_capacity" displayName="Tank Capacity">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Odometer" displayName="Ocometer">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
                 </TKPropertyGroup>
                 <TKPropertyGroup tkDataFormGroups collapsible="false" name="Next Service">
-                    <TKEntityProperty tkPropertyGroupProperties name="Next_Service_Date" displayName="Date"></TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Next_Service_Odometer" displayName="Odometer Reading"></TKEntityProperty>
+                    <TKGroupTitleStyle tkPropertyGroupTitleStyle fillColor="#9426e2" labelTextSize="15" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif" labelFontStyle="Bold" labelTextColor="White"></TKGroupTitleStyle>
+                    <TKEntityProperty tkPropertyGroupProperties name="Next_Service_Date" displayName="Date">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Next_Service_Odometer" displayName="Odometer Reading">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
                 </TKPropertyGroup>
                 <TKPropertyGroup tkDataFormGroups collapsible="false" name="Usage">
-                    <TKEntityProperty tkPropertyGroupProperties name="Refuel" displayName="Refuel(RM)"></TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Service" displayName="Service(RM)"></TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Insurance" displayName="Insurance(RM)"></TKEntityProperty>
-                    <TKEntityProperty tkPropertyGroupProperties name="Expenses" displayName="Expenses(RM)"></TKEntityProperty>
+                    <TKGroupTitleStyle tkPropertyGroupTitleStyle fillColor="#9426e2" labelTextSize="15" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif" labelFontStyle="Bold" labelTextColor="White"></TKGroupTitleStyle>
+                    <TKEntityProperty tkPropertyGroupProperties name="Refuel" displayName="Refuel(RM)">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Service" displayName="Service(RM)">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Insurance" displayName="Insurance(RM)">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
+                    <TKEntityProperty tkPropertyGroupProperties name="Expenses" displayName="Expenses(RM)">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Left" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
                 </TKPropertyGroup>
             </RadDataForm>
             <Button height="15%" text="CLOSE" class="submit_button" (tap)="close()"></Button>

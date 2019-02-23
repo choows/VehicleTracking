@@ -541,6 +541,13 @@ RadDataForm {
     }
 }
 
-tkPropertyGroupProperties {
-    font-size: 150;
+TKEntityProperty {
+    background-color: #00BCD4;
+    color: #303F9F;
+    border-color: #303F9F;
+    border-width: 5;
+    border-radius: 5;
+    margin: 10;
+    padding: 10;
+    font-size: 14;
 }

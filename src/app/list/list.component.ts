@@ -92,12 +92,12 @@ export class ListComponent implements OnInit {
         };
         let options = {
             context: items,
-            fullscreen: false,
+            fullscreen: true,
             viewContainerRef: this.vcRef,
-            //animate : true
+            animate : true
         };
         this.modal.showModal(VehicleDetailComponent, options).then(res => {
-            console.log(res);
+           // console.log(res);
         });
 
     }

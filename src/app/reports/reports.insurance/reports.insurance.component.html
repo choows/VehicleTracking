@@ -40,23 +40,45 @@
 		-->
             <RadDataForm tkExampleTitle tkToggleNavButton [source]="reports">
                 <TKPropertyGroup tkDataFormGroups collapsible="true" name="Date & Time">
+                    <TKGroupTitleStyle tkPropertyGroupTitleStyle fillColor="#9426e2" labelTextSize="15" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif" labelFontStyle="Bold" labelTextColor="White"></TKGroupTitleStyle>
+
                     <TKEntityProperty tkPropertyGroupProperties name="date" displayName="Date">
-                        <TKPropertyEditor tkEntityPropertyEditor type="DatePicker"></TKPropertyEditor>
+                        <TKPropertyEditor tkEntityPropertyEditor type="DatePicker">
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Top" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+
+                        </TKPropertyEditor>
                     </TKEntityProperty>
                 </TKPropertyGroup>
                 <TKPropertyGroup tkDataFormGroups collapsible="true" name="Insurance Detail">
+                    <TKGroupTitleStyle tkPropertyGroupTitleStyle fillColor="#9426e2" labelTextSize="15" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif" labelFontStyle="Bold" labelTextColor="White"></TKGroupTitleStyle>
+
                     <TKEntityProperty tkPropertyGroupProperties name="Company" displayName="Company" [valuesProvider]="insuranceCompany">
-                        <TKPropertyEditor tkEntityPropertyEditor type="Picker"></TKPropertyEditor>
+                        <TKPropertyEditor tkEntityPropertyEditor type="Picker">
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Top" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+
+                        </TKPropertyEditor>
                     </TKEntityProperty>
                     <TKEntityProperty tkPropertyGroupProperties name="Insurance_type" displayName="Insurance Type" [valuesProvider]="insurancetype">
-                        <TKPropertyEditor tkEntityPropertyEditor type="Picker"></TKPropertyEditor>
+                        <TKPropertyEditor tkEntityPropertyEditor type="Picker">
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Top" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+
+                        </TKPropertyEditor>
                     </TKEntityProperty>
                     <TKEntityProperty tkPropertyGroupProperties name="Amount">
-                        <TKPropertyEditor tkEntityPropertyEditor type="Decimal"></TKPropertyEditor>
+                        <TKPropertyEditor tkEntityPropertyEditor type="Decimal">
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Top" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+
+                        </TKPropertyEditor>
                     </TKEntityProperty>
                 </TKPropertyGroup>
                 <TKPropertyGroup tkDataFormGroups collapsible="true" name="Others">
-                    <TKEntityProperty tkPropertyGroupProperties name="note"></TKEntityProperty>
+                    <TKGroupTitleStyle tkPropertyGroupTitleStyle fillColor="#9426e2" labelTextSize="15" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif" labelFontStyle="Bold" labelTextColor="White"></TKGroupTitleStyle>
+
+                    <TKEntityProperty tkPropertyGroupProperties name="note">
+                        <TKPropertyEditor tkEntityPropertyEditor>
+                            <TKPropertyEditorStyle tkPropertyEditorStyle labelPosition="Top" labelHidden="false" labelTextSize="14" ios:labelFontName="Times New Roman" android:labelFontName="sans-serif-light" labelFontStyle="Bold" labelTextColor="#110d11"></TKPropertyEditorStyle>
+                        </TKPropertyEditor>
+                    </TKEntityProperty>
                 </TKPropertyGroup>
             </RadDataForm>
             <Button text="Photo" (tap)="Photo()" class="photo_button"></Button>
