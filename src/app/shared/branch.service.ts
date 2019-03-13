@@ -121,7 +121,7 @@ export class BranchService {
     }
 
     getVehicleDetail(plate_no : string){
-        return this.BranchVehicle[plate_no];
+        return this.BranchVehicles[plate_no];
     }
 
     /**

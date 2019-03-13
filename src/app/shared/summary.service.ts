@@ -95,10 +95,15 @@ export class SummaryService {
      * read all report's date and cost. 
      * 
      * and then combine into array. 
+     * 
+     * 
+     * 
+     * sent the data into json and then cnovert into aray
      */
     private costperday(result: JSON) {
         //let usage_per_day : any[] = [] ; 
         const nowdate = new Date(Date.now());
+        var results : JSON ;
         for (var vehicles in result) {
             const vehicle_Report = result[vehicles]["Reports"];
             for (var report_type in vehicle_Report) {
@@ -113,13 +118,46 @@ export class SummaryService {
                                     Date: date.getDate(),
                                     Amount: report["Amount"]
                                 });
+                               // results[date.getDate()][report["Amount"]];
+                                
                             }
                         }
                     }
                 }
             }
         }
+       // this.rearrangecostperday();
+       console.log(results);
     }
+
+    private rearrangecostperday(){
+        var result : JSON ; 
+        for(var index in this.cost_per_day_result){
+            for(var i in result){
+             
+            }
+        }
+    }
+    /**
+var output = [];
+
+array.forEach(function(item) {
+  var existing = output.filter(function(v, i) {
+    return v.name == item.name;
+  });
+  if (existing.length) {
+    var existingIndex = output.indexOf(existing[0]);
+    output[existingIndex].value = output[existingIndex].value.concat(item.value);
+  } else {
+    if (typeof item.value == 'string')
+      item.value = [item.value];
+    output.push(item);
+  }
+});
+
+console.dir(output);
+     */
+
 
     /**
      * the month have to +1 ......
@@ -149,7 +187,25 @@ export class SummaryService {
     }
 
     return_cost_per_day() {
-        return this.cost_per_day_result;
+       // return this.cost_per_day_result;
+       var array : any[] = [] ; 
+       for(var i in this.cost_per_day_result){
+           var item = this.cost_per_day_result[i];
+           var counter = true;
+           for(var arr_item in array){
+               if(array[arr_item].Date == item.Date){
+                    array[arr_item].Amount += item.Amount;
+                    counter = false;
+               }
+           }
+           if(counter){
+               array.push({
+                   Date : item.Date,
+                   Amount : item.Amount
+               });
+           }
+       }
+       return array;
     }
 
     return_cost_per_vehicle() {
